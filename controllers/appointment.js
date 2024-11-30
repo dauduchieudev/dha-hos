@@ -18,9 +18,17 @@ class AppointmentController {
             const limit = 3; 
             const offset = (page - 1) * limit; 
 
+            const patient = await Patient.findOne({
+                where: { user_id: user.user_id },
+                attributes: [ 'patient_id' ]
+            })
+
             // Truy vấn danh sách lịch khám
             const { count, rows: appointments } = await Appointment.findAndCountAll({
-                where: { status: 'Đã khám' }, 
+                where: { 
+                    status: 'Đã khám',
+                    patient_id: patient.patient_id
+                }, 
                 include: [
                     {
                         model: Doctor,
