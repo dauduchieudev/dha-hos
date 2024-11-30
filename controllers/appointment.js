@@ -84,7 +84,7 @@ class AppointmentController {
             // Truy vấn danh sách lịch khám
             const { count, rows: appointments } = await Appointment.findAndCountAll({
                 where: { 
-                    status: 'Đã khám',
+                    status: 'Chờ khám',
                     patient_id: patient.patient_id
                 },
                 include: [
