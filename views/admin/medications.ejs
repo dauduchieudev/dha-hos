@@ -1,0 +1,72 @@
+<% customCSS = `<link rel="stylesheet" href="/css/admin/medications.css">` %>
+
+    <h1>Medication List</h1>
+
+    <!-- Form tìm kiếm medication -->
+    <form action="/admin/medicine/search" method="POST" class="search-form">
+        <input type="text" name="medication_name" placeholder="Search by Medication Name" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Hiển thị lỗi nếu không tìm thấy -->
+    <% if (errorMessage) { %>
+        <p class="error-message"><%= errorMessage %></p>
+    <% } %>
+
+    <!-- Bảng danh sách medications -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Medication Name</th>
+                <th>Unit</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% medications.forEach(medication => { %>
+                <tr>
+                    <td><%= medication.medication_id %></td>
+                    <td><%= medication.medication_name %></td>
+                    <td><%= medication.unit %></td>
+                    <td><%= medication.description %></td>
+                    <td>
+                        <!-- Edit button -->
+                        <a class="edit-btn" href="/admin/medicine/<%= medication.medication_id %>/edit">Edit</a>
+                        <!-- Delete button -->
+                        <form action="/admin/medicine/<%= medication.medication_id %>/delete" method="POST" style="display:inline;">
+                            <button class="delete-btn" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <a href="/admin/medicine?page=1" class="first">First</a>
+        <% if (currentPage > 1) { %>
+            <a href="/admin/medicine?page=<%= currentPage - 1 %>" class="prev">Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <% if (i >= currentPage - 2 && i <= currentPage + 2) { %> <!-- Hiển thị số trang gần -->
+                <a href="/admin/medicine?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+            <a href="/admin/medicine?page=<%= currentPage + 1 %>" class="next">Next</a>
+        <% } %>
+        <a href="/admin/medicine?page=<%= totalPages %>" class="last">Last</a>
+    </div>
+
+    <!-- Jump to page -->
+    <div class="jump-to-page">
+        <form action="/admin/medicine" method="GET" class="jump-form">
+            <input type="number" name="page" min="1" max="<%= totalPages %>" placeholder="Page #" required>
+            <button type="submit">Go</button>
+        </form>
+    </div>
+
+<% customJS = "" %>

@@ -1,0 +1,53 @@
+<% customCSS = `<link rel="stylesheet" href="/css/doctor/editresult.css">` %>
+
+    <div class="content">
+        <h2 class="mb-4">Tổng hợp lịch khám</h2>
+        <div id="pending-list" class="appointments-list">
+            <% if (appointments.length > 0) { %>
+                <% appointments.forEach(appointment => { %>
+                    <div class="appointment-card">
+                        <div class="info">
+                            <p>Ngày khám: <%= new Date(appointment.appointment_date).toLocaleDateString() %></p>
+                            <p>Thời gian: 
+                                <%= appointment.shift_period_id === 1 ? 'Sáng' : 
+                                    appointment.shift_period_id === 2 ? 'Chiều' : 'Tối' %>
+                            </p>
+                            <p>Khoa: <%= appointment.ClinicRoom.Department.department_name %></p>
+                            <p>Phòng khám: <%= appointment.ClinicRoom.room_name %></p>
+                            <p>Bệnh nhân: <%= appointment.Patient.User.full_name %></p>
+                        </div>
+                    
+                        <div class="button-container">
+                            <% if (appointment.status === 'Chờ khám') { %>
+                                <!-- Đang chờ khám -->
+                                <button class="disabled">Chờ khám</button>
+                                <form action="/doctor/edit-result/<%= appointment.appointment_id %>" method="GET">
+                                    <button class="start-button" type="submit">Tiến hành khám</button>
+                                </form>
+                            <% } else if (appointment.status === 'Đã khám') { %>
+                                <!-- Đã khám -->
+                                <button class="abled">Đã khám</button>
+                                <form action="/doctor/edit-result/<%= appointment.appointment_id %>" method="GET">
+                                    <button class="edit-button">Chỉnh sửa kết quả</button>
+                                </form>      
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>Không có lịch khám nào được hẹn.</p>
+            <% } %>
+        </div>
+    
+        <!-- Phân trang -->
+        <div id="pending-pagination" class="pagination-container">
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="/doctor/edit-result/?page=<%= i %>" 
+                   class="page-link <%= i === currentPage ? 'active' : '' %>">
+                    <%= i %>
+                </a>
+            <% } %>
+        </div>
+    </div>
+
+<% customJS = "" %>

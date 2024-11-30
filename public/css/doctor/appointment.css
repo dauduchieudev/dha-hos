@@ -1,0 +1,108 @@
+.content {
+  width: 70%;
+  padding: 20px;
+}
+
+.content-section {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appointment-card {
+  display: flex;
+  justify-content: space-between; /* Chia đều khoảng cách giữa các phần */
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  position: relative;
+  border: 1px solid #ddd;
+  margin-bottom: 20px; /* Khoảng cách giữa các card */
+}
+
+.appointment-card .info {
+  flex: 1; /* Phần thông tin chiếm không gian lớn hơn */
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.appointment-card .info p {
+  margin: 5px 0; /* Khoảng cách nhỏ giữa các dòng */
+}
+
+.appointment-card .button-container {
+  display: flex; /* Xếp dọc các nút */
+  justify-content: center;
+  align-items: center; /* Căn phải các nút */
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.appointment-card button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.appointment-card button.disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: default;
+  margin: 0 12px;
+}
+
+.appointment-card button.edit {
+  background-color: #2e7d32;
+  color: white;
+  cursor: pointer;
+}
+
+.appointment-card button.edit:hover {
+  background-color: #286b2b;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.page-link {
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
+}
+
+.page-link.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.page-link:hover {
+  background-color: #bdc3c7;
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  background-color: #4caf50;
+  color: white;
+}

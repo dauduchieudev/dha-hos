@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bệnh viện DHA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+
+    <%- customCSS || '' %>
+</head>
+
+<body>
+    <!-- Hình ảnh biểu trưng với overlay gradient -->
+    <div class="banner-container">
+        <img src="/images/banner.avif" alt="Banner Bệnh Viện ABC" class="banner-image">
+        <div class="banner-overlay"></div>
+        
+        <!-- Nội dung tiêu đề và thanh tìm kiếm -->
+        <div class="banner-content">
+            <h2>Chăm sóc sức khoẻ toàn diện</h2>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Tìm kiếm thông tin...">
+                <button class="search-button">Tìm Kiếm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <img src="/images/logo.png" alt="Logo Bệnh Viện ABC">
+            <h1 style="font-size: 18px; margin: 0;">Bệnh Viện ABC</h1>
+        </div>
+        <div class="navbar">
+            <a href="/appointment">Đặt Lịch Khám</a>
+            <a href="#search-medicine">Tra Cứu Thuốc</a>
+            <a href="/view-result">Xem Kết Quả Khám</a>
+            <a href="#our-doctors">Đội Ngũ Bác Sĩ</a>
+        </div>
+
+        <div class="auth-buttons">
+            <span>Xin chào, <%= user.full_name %>!</span>
+            
+            <form action="/logout" method="GET" style="display: inline;">
+                <button type="submit">Đăng xuất</button>
+            </form>
+        </div>
+
+    </header>
+
+    <div class="container">
+        <div class="booking-layout">
+            <%- body %>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Bệnh Viện ABC | Địa chỉ: Số 123 Đường ABC, Quận 1, TP. Hồ Chí Minh | Điện thoại: (028) 1234 5678</p>
+    </footer>
+
+    <%- customJS || '' %>
+</body>
+</html>

@@ -1,0 +1,106 @@
+/* CSS cho trang Dashboard */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Nền màu sáng */
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #2e7d32; /* Màu xanh lá cây đậm */
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.section {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.section:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #388e3c; /* Màu xanh lá cây trung bình */
+    margin-bottom: 20px;
+    border-bottom: 3px solid #388e3c;
+    padding-bottom: 10px;
+    font-weight: 600;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 15px 0;
+}
+
+nav ul li button.nav-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 14px 20px;
+    background-color: #66bb6a; /* Màu xanh lá cây nhạt */
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+nav ul li button.nav-btn:hover {
+    background-color: #388e3c; /* Xanh lá cây đậm khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+    box-shadow: 0 4px 10px rgba(56, 142, 60, 0.2); /* Thêm bóng mờ khi hover */
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 15px;
+    color: #777;
+    background-color: #e8f5e9;
+    border-top: 1px solid #a5d6a7;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Thêm khoảng cách cho phần button trong từng section */
+.section ul {
+    margin-top: 10px;
+}
+
+/* Tăng cường tính tương tác của button */
+nav ul li button.nav-btn:active {
+    transform: scale(1); /* Giảm phóng đại khi bấm */
+    background-color: #2e7d32; /* Đổi màu khi click */
+}

@@ -1,0 +1,70 @@
+<% customCSS = `<link rel="stylesheet" href="/css/admin/users.css">` %>
+
+    <h1>User List</h1>
+
+    <!-- Form tìm kiếm người dùng -->
+    <form action="/admin/users/search" method="POST" class="search-form">
+        <input type="text" name="user_name" placeholder="Search by Username" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Hiển thị lỗi nếu không tìm thấy -->
+    <% if (errorMessage) { %>
+        <p class="error-message"><%= errorMessage %></p>
+    <% } %>
+
+    <!-- Bảng danh sách người dùng -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.user_id %></td>
+                    <td><%= user.user_name %></td>
+                    <td><%= user.full_name %></td>
+                    <td><%= user.role %></td>
+                    <td>
+                        <a class="edit-btn" href="/admin/users/<%= user.user_id %>/edit">Edit</a>
+                        <form action="/admin/users/<%= user.user_id %>/delete" method="POST" style="display:inline;">
+                            <button class="delete-btn" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <a href="/admin/users?page=1" class="first">First</a>
+        <% if (currentPage > 1) { %>
+            <a href="/admin/users?page=<%= currentPage - 1 %>" class="prev">Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <% if (i >= currentPage - 2 && i <= currentPage + 2) { %> <!-- Hiển thị số trang gần -->
+                <a href="/admin/users?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+            <a href="/admin/users?page=<%= currentPage + 1 %>" class="next">Next</a>
+        <% } %>
+        <a href="/admin/users?page=<%= totalPages %>" class="last">Last</a>
+    </div>
+
+    <!-- Jump to page -->
+    <div class="jump-to-page">
+        <form action="/admin/users" method="GET" class="jump-form">
+            <input type="number" name="page" min="1" max="<%= totalPages %>" placeholder="Page #" required>
+            <button type="submit">Go</button>
+        </form>
+    </div>
+
+<% customJS = "" %>

@@ -1,0 +1,235 @@
+.booking-layout {
+  display: flex;
+}
+
+.sidebar {
+  width: 20%;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  height: 50px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar ul li a.selected {
+  text-decoration: none;
+  color: white;
+}
+
+.content {
+  width: 70%;
+  padding: 20px;
+  margin-left: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.appointments-list {
+  width: 100%;
+}
+
+.appointment-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  position: relative;
+  border: 1px solid #ddd;
+  margin-bottom: 20px; /* Khoảng cách giữa các card */
+}
+
+.appointment-card .info {
+  flex: 1; /* Phần thông tin chiếm không gian lớn hơn */
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.appointment-card .info p {
+  margin: 5px 0; /* Khoảng cách nhỏ giữa các dòng */
+}
+
+.btn.view-results {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn.view-results:hover {
+  background-color: #0056b3;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.page-link {
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
+}
+
+.page-link.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.page-link:hover {
+  background-color: #bdc3c7;
+}
+
+.appointment-container {
+  width: 80%; 
+  max-width: 430px; 
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  box-sizing: border-box;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-detail,
+.appointment-form label,
+.appointment-form button {
+    width: 100%; /* Chiếm toàn bộ chiều ngang container */
+    max-width: 400px; /* Giới hạn chiều rộng từng phần tử */
+    margin-bottom: 5px;
+}
+
+.appointment-form span,
+.appointment-form input,
+.appointment-form select {
+  margin-bottom: 10px;
+}
+
+/* Định dạng label */
+.form-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+    text-align: left; /* Căn trái văn bản */
+}
+
+/* Textarea */
+.styled-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+/* Select và Input */
+.styled-select,
+.input-date {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Read-only display */
+.display-only {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #555;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Nút Đặt lịch */
+button.submit-button {
+    padding: 12px;
+    background-color: #28a745; /* Màu xanh */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button.submit-button:hover {
+    background-color: #218838; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .appointment-container {
+        padding: 15px;
+    }
+
+    .form-label {
+        font-size: 13px;
+    }
+
+    button.submit-button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  background-color: #4caf50;
+  color: white;
+}

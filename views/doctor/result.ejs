@@ -1,0 +1,196 @@
+<% customCSS = `<link rel="stylesheet" href="/css/doctor/result.css">` %>
+
+    <div class="sidebar">
+        <ul>
+            <li onclick="toggleSection('diagnosis-section')">Chuẩn đoán</li>
+            <li onclick="toggleSection('test-results-section')">Kết quả xét nghiệm</li>
+            <li onclick="toggleSection('image-results-section')">Kết quả chụp chiếu</li>
+            <li onclick="toggleSection('prescriptions-section')">Đơn thuốc</li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <form action="/doctor/submit-diagnosis" method="POST" id="diagnosis-form">
+            <input type="hidden" name="appointment_id" value="<%= appointment_id %>">
+            <input type="hidden" name="patient_id" value="<%= patient.patient_id %>">
+            
+            <div id="diagnosis-section" class="section">
+                <h3>Chẩn đoán</h3>
+            
+                <div class="form-group">
+                    <label for="patient_name">Tên bệnh nhân</label>
+                    <input type="text" id="patient_name" name="patient_name" class="form-control" value="<%= patient.User.full_name %>" readonly>
+                </div>
+            
+                <div class="form-group">
+                    <label for="blood_type">Nhóm máu</label>
+                    <select id="blood_type" name="blood_type" class="form-control">
+                        <option value="0" <%= patient.blood_type_id === '' ? 'selected' : '' %>>Chưa có</option>
+                        <option value="1" <%= patient.blood_type_id === 1 ? 'selected' : '' %>>O+</option>
+                        <option value="2" <%= patient.blood_type_id === 2 ? 'selected' : '' %>>O-</option>
+                        <option value="3" <%= patient.blood_type_id === 3 ? 'selected' : '' %>>A+</option>
+                        <option value="4" <%= patient.blood_type_id === 4 ? 'selected' : '' %>>A-</option>
+                        <option value="5" <%= patient.blood_type_id === 5 ? 'selected' : '' %>>B+</option>
+                        <option value="6" <%= patient.blood_type_id === 6 ? 'selected' : '' %>>B-</option>
+                        <option value="7" <%= patient.blood_type_id === 7 ? 'selected' : '' %>>AB+</option>
+                        <option value="8" <%= patient.blood_type_id === 8 ? 'selected' : '' %>>AB-</option>
+                    </select>
+                </div>
+            
+                <div id="form-group-allergies" class="form-group">
+                    <label for="allergies">Dị ứng</label>
+                    <input id="allergies" name="allergies" class="form-control" value="<%= patient.allergies || 'Chưa có' %>" required>
+                </div>
+            
+                <div class="form-group">
+                    <label for="preliminary_diagnosis">Chẩn đoán sơ bộ</label>
+                    <input id="preliminary_diagnosis" name="preliminary_diagnosis" class="form-control" value="<%= diagnosis ? diagnosis.preliminary_diagnosis : 'Chưa có' %>" required>
+                </div>
+            
+                <div class="form-group">
+                    <label for="final_diagnosis">Chẩn đoán cuối cùng</label>
+                    <input id="final_diagnosis" name="final_diagnosis" class="form-control" value="<%= diagnosis ? diagnosis.final_diagnosis : 'Chưa có' %>" required>
+                </div>
+            
+                <div class="form-group">
+                    <label for="treatmentPlan">Kế hoạch điều trị</label>
+                    <input id="treatmentPlan" name="treatmentPlan" class="form-control" value="<%= diagnosis ? diagnosis.treatmentPlan : 'Chưa có' %>" required>
+                </div>
+            
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Lưu chẩn đoán</button>
+                </div>
+            </div>
+            
+        </form>
+
+        <form action="/doctor/submit-test-result" method="POST" id="test-result-form">
+            <input type="hidden" name="appointment_id" value="<%= appointment_id %>">
+            
+            <div id="test-results-section" class="section">
+                <h3>Kết quả xét nghiệm</h3>
+                <button type="button" class="btn btn-success" onclick="addTestResult()">Thêm kết quả xét nghiệm</button>
+
+                <div id="test-result-container">
+                    <% testResults.forEach(result => { %>
+                        <div class="test-result">
+                            <h3><strong><%= result.TestIndicator.TestType.test_type_name %></strong></h3>
+                            <p><strong><%= result.TestIndicator.test_indicator_name %>:</strong> <%= result.test_value %> <%= result.TestIndicator.unit %></p>
+                            <p><strong>Ngưỡng trung bình:</strong> <%= result.TestIndicator.reference_range %></p>
+                            <p><strong>Ghi chú:</strong> <%= result.comments || "Chưa có ghi chú" %></p>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <div id="test-type-form" style="display:none;">
+                    <label for="test_type">Loại xét nghiệm</label>
+                    <select id="test_type" name="test_type" class="form-control">
+                        <!-- Các loại xét nghiệm sẽ được điền vào đây -->
+                    </select>
+                    
+                    <div id="test-indicator-container">
+                        <!-- Các chỉ số xét nghiệm sẽ được điền vào đây -->
+                    </div>
+        
+                    <button type="button" class="btn btn-primary" onclick="submitTestResult()">Lưu kết quả xét nghiệm</button>
+                </div>
+            </div>
+        </form>
+        
+        <form action="/doctor/submit-image-result" method="POST" id="image-result-form">
+            <input type="hidden" name="appointment_id" value="<%= appointment_id %>">
+        
+            <div id="image-results-section" class="section">
+                <h3>Kết quả chụp chiếu</h3>
+                <button type="button" class="btn btn-success" onclick="addImageResult()">Thêm kết quả chụp chiếu</button>
+        
+                <% imageResults.forEach(result => { %>
+                    <div class="image-result">
+                        <p><strong>Loại hình ảnh:</strong> <%= result.ImagingType.imaging_type_name %></p>
+                        <p><strong>Link ảnh:</strong> <a href="<%= result.image_url %>" target="_blank" style="color: #007bff; text-decoration: none;">Xem ảnh</a></p>
+                        <p><strong>Nhận xét:</strong> <%= result.comments || "Chưa có nhận xét" %></p>
+
+                        <button type="button" class="btn btn-danger" onclick="deleteImageResult('<%= result.imaging_result_id %>')">Xóa</button>
+                    </div>
+                <% }) %>
+
+                <div id="new-image-result-form" style="display: none;">
+                    <label for="imaging_type">Loại hình ảnh</label>
+                    <select id="imaging_type" name="imaging_type" class="form-control">
+                        <!-- Các loại hình ảnh sẽ được điền vào đây -->
+                    </select>
+            
+                    <label for="image_url">Link ảnh</label>
+                    <input type="text" id="image_url" name="image_url" class="form-control" placeholder="Nhập link ảnh" required>
+            
+                    <label for="comments">Nhận xét</label>
+                    <input type="text" id="comments" name="comments" class="form-control" placeholder="Nhập nhận xét" required>
+            
+                    <button type="button" class="btn btn-primary" onclick="saveImageResult()">Lưu kết quả</button>
+                </div>
+            </div>
+        </form>
+        
+        <form action="/doctor/submit-prescription" method="POST" id="prescription-form">
+            <input type="hidden" name="appointment_id" value="<%= appointment_id %>">
+        
+            <div id="prescriptions-section" class="section">
+                <h3>Đơn thuốc</h3>
+                <button id="add-prescription-btn" type="button" class="btn btn-success">Thêm đơn thuốc</button>
+        
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Số thứ tự</th>
+                            <th>Tên thuốc</th>
+                            <th>Cách sử dụng</th>
+                            <th>Tổng số lượng</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (prescriptionDetails && prescriptionDetails.length > 0) { %> 
+                            <% prescriptionDetails.forEach((prescriptionDetail, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= prescriptionDetail.Medication.medication_name %></td>
+                                    <td><%= prescriptionDetail.usageInstructions %></td>
+                                    <td><%= prescriptionDetail.quantity %> <%= prescriptionDetail.unit %></td> 
+                                    <td>
+                                        <input type="hidden" class="existing-medication-id" value="<%= prescriptionDetail.medication_id %>">
+                                        <button type="button" class="btn btn-danger" onclick="deletePrescription('<%= prescriptionDetail.medication_id %>')">Xóa</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>  
+                            <tr>
+                                <td colspan="5" class="text-center">Không có đơn thuốc nào.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+        
+                <div id="new-prescription-form" style="display: none;">
+                    <label for="medication">Tên thuốc</label>
+                    <input type="text" id="medication" name="medication" class="form-control" placeholder="Nhập tên thuốc" />
+                    <ul id="medication-suggestions" style="display: none; list-style-type: none; padding-left: 0;"></ul>
+                
+                    <input type="hidden" id="medication_id" name="medication_id">
+
+                    <label for="usage_instructions">Cách sử dụng</label>
+                    <input type="text" id="usage_instructions" name="usage_instructions" class="form-control" placeholder="Nhập cách sử dụng" required>
+                
+                    <label for="quantity">Số lượng</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" placeholder="Nhập số lượng" required>
+                
+                    <label for="unit">Đơn vị</label>
+                    <input type="text" id="unit" name="unit" class="form-control" placeholder="Nhập đơn vị" readonly required>
+                
+                    <button type="button" class="btn btn-primary" onclick="savePrescription()">Lưu đơn thuốc</button>
+                </div>
+            </div>
+        </form>
+        
+    </div>
+
+<% customJS = `<script src="/js/doctor/result.js" type="text/javascript" defer></script>` %>

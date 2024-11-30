@@ -1,0 +1,127 @@
+.sidebar {
+  width: 20%;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  height: 50px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar ul li a.selected {
+  text-decoration: none;
+  color: white;
+}
+
+.content {
+  width: 70%;
+  padding: 20px;
+  margin-left: 70px;
+}
+
+.content-section {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: flex-start;
+}
+
+#pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appointment-card {
+  display: flex;
+  justify-content: space-between; /* Chia đều khoảng cách giữa các phần */
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  position: relative;
+  border: 1px solid #ddd;
+  margin-bottom: 20px; /* Khoảng cách giữa các card */
+}
+
+.appointment-card .info {
+  flex: 1; /* Phần thông tin chiếm không gian lớn hơn */
+  display: flex;
+  flex-direction: column; 
+  margin-left: 10px;
+}
+
+.appointment-card .info p {
+  margin: 5px 0; /* Khoảng cách nhỏ giữa các dòng */
+}
+
+.btn.view-results {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn.view-results:hover {
+  background-color: #0056b3;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.page-link {
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
+}
+
+.page-link.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.page-link:hover {
+  background-color: #bdc3c7;
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  background-color: #4caf50;
+  color: white;
+}

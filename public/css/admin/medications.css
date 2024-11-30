@@ -1,0 +1,198 @@
+/* CSS cho body */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Nền nhạt */
+    color: #333;
+}
+
+/* Tiêu đề */
+h1 {
+    font-size: 2rem;
+    text-align: center;
+    color: #2e7d32; /* Xanh lá cây đậm */
+    margin-bottom: 20px;
+}
+
+/* Bảng danh sách medications */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #66bb6a; /* Xanh lá cây nhạt */
+    color: white;
+}
+
+thead th {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 1rem;
+}
+
+tbody td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Nền xen kẽ */
+}
+
+tbody tr:hover {
+    background-color: #e8f5e9; /* Nền xanh nhạt khi hover */
+}
+
+/* Nút Edit và Delete */
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.edit-btn {
+    background-color: #388e3c; /* Xanh lá cây */
+}
+
+.edit-btn:hover {
+    background-color: #2e7d32; /* Xanh lá cây đậm */
+}
+
+.delete-btn {
+    background-color: #d32f2f; /* Đỏ */
+}
+
+.delete-btn:hover {
+    background-color: #b71c1c; /* Đỏ đậm */
+}
+
+/* Phân trang */
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 10px 15px;
+    background-color: #66bb6a; /* Xanh lá cây nhạt */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a.active {
+    background-color: #2e7d32; /* Xanh lá cây đậm */
+    cursor: default;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #388e3c; /* Xanh lá cây trung bình */
+}
+
+.pagination a.first, .pagination a.last {
+    font-weight: bold;
+    color: #fff;
+    background-color: #66bb6a; /* Xanh lá cây nhạt cho "First" và "Last" */
+}
+
+.pagination a.first:hover, .pagination a.last:hover {
+    background-color: #388e3c; /* Xanh lá cây trung bình khi hover */
+}
+
+/* Form nhảy trang */
+.jump-to-page {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.jump-to-page input {
+    width: 80px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.jump-to-page input:focus {
+    outline: none;
+    border: 1px solid #388e3c; /* Viền xanh lá khi focus */
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+}
+
+.jump-to-page button {
+    padding: 10px 15px;
+    background-color: #66bb6a; /* Xanh lá cây */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.jump-to-page button:hover {
+    background-color: #388e3c; /* Xanh lá cây đậm hơn khi hover */
+}
+
+/* Form tìm kiếm medication */
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;  /* Khoảng cách dưới form tìm kiếm */
+}
+
+.search-form input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd; /* Viền nhạt */
+    border-radius: 5px;
+    width: 250px; /* Chiều rộng của input */
+    margin-right: 10px; /* Khoảng cách giữa input và button */
+    transition: border-color 0.3s ease;
+}
+
+.search-form input:focus {
+    outline: none;
+    border-color: #388e3c; /* Viền xanh lá khi focus */
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+}
+
+.search-form button {
+    padding: 10px 20px;
+    background-color: #66bb6a; /* Xanh lá cây nhạt */
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-form button:hover {
+    background-color: #388e3c; /* Xanh lá cây đậm hơn khi hover */
+}
+
+/* Thêm hover effect cho form tìm kiếm */
+.search-form input:hover,
+.search-form button:hover {
+    background-color: #e8f5e9; /* Nền xanh nhạt khi hover */
+}

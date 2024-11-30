@@ -1,0 +1,333 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: Arial, sans-serif;
+}
+/* Hình ảnh biểu trưng với lớp phủ gradient */
+.banner-container {
+  position: relative;
+  width: 100%;
+  max-height: 300px;
+  overflow: hidden;
+}
+.banner-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 1)
+  );
+}
+
+/* Nội dung trên banner */
+.banner-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #333;
+}
+.banner-content h2 {
+  font-size: 32px;
+  color: #ffffff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+.search-bar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  font-size: 16px;
+  outline: none;
+}
+.search-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+}
+.search-button:hover {
+  background-color: #45a049;
+}
+
+/* Header cố định ở trên cùng */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #4caf4fcf;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-section img {
+  height: 40px;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+.navbar {
+  display: flex;
+}
+
+footer {
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* Container toàn màn hình */
+.container {
+  width: 100%;
+  /* padding: 20px; */
+  background-color: #fff; /* Màu nền mặc định */
+}
+
+/* Màu xen kẽ cho các phần */
+.section {
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  padding: 80px 20px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+.section:nth-child(odd) {
+  background-color: #fff;
+}
+.section:nth-child(even) {
+  background-color: #e0f7fa;
+}
+.section button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+.section button:hover {
+  background-color: #45a049;
+}
+
+.section#services {
+  display: flex;
+  flex-direction: column;
+}
+
+.section#services .title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.section#services > .title > * {
+  margin: 20px 10px 20px 30px;
+}
+
+.section#services .cards {
+  display: flex;
+  overflow-x: auto; /* Cho phép cuộn ngang */
+  overflow-y: hidden; /* Ngăn cuộn dọc */
+  gap: 10px;
+  padding: 10px;
+  white-space: nowrap; /* Đảm bảo cuộn ngang cho toàn bộ container */
+}
+
+.section#services .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #4caf50;
+  width: 230px; /* Đặt chiều rộng cố định để tránh bị ép */
+  min-width: 230px; /* Đảm bảo thẻ không thu nhỏ hơn kích thước này */
+  padding: 20px;
+  border-radius: 20px;
+  color: #fff;
+  margin: 0 10px;
+  text-align: left;
+  box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến chiều rộng */
+  cursor: pointer;
+}
+
+.section#services .card i {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.section#services .card .title p,
+.section#services .card .description p {
+  white-space: normal; /* Cho phép xuống dòng */
+  line-height: 1.4;
+  margin: 0; /* Loại bỏ khoảng cách thừa nếu cần */
+  font-size: 0.8em;
+}
+
+.section#services .card .title p {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Phần chung cho các section */
+.modern-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 50px 0;
+  padding: 50px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.modern-section.reverse {
+  flex-direction: row-reverse;
+}
+
+.modern-section .content {
+  width: 50%;
+  z-index: 2;
+  color: white;
+  text-align: left;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modern-section .content h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.modern-section .content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.modern-section .content button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* Nút bấm */
+.btn-primary {
+  background-color: #004aad;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #003984;
+}
+
+.btn-secondary {
+  background-color: #b73225;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #95201c;
+}
+
+.btn-highlight {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.btn-highlight:hover {
+  background-color: #205922;
+}
+
+.btn-primary-outline {
+  background-color: transparent;
+  color: #1a73e8;
+  border: 2px solid #1a73e8;
+}
+
+.btn-primary-outline:hover {
+  background-color: #1a73e8;
+  color: white;
+}
+
+/* Hình ảnh nền */
+.modern-section .image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+}
+
+.modern-section .image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #13280c, #00000000);
+  z-index: 1;
+}
+
+.modern-section.reverse .image::after {
+  background: linear-gradient(to left, #13280c, #00000000);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modern-section {
+    flex-direction: column;
+  }
+  .modern-section.reverse {
+    flex-direction: column;
+  }
+  .modern-section .content,
+  .modern-section .image {
+    width: 100%;
+  }
+  .modern-section .image {
+    height: 200px;
+  }
+}

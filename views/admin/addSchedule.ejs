@@ -1,0 +1,70 @@
+<% customCSS = `<link rel="stylesheet" href="/css/admin/addSchedule.css">` %>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add Shift Schedule</title>
+        <%- customCSS %>
+    </head>
+    <body>
+        <main>
+            <h1>Add Shift Schedule</h1>
+            <% if (errorMessage) { %>
+                <p class="error-message"><%= errorMessage %></p>
+            <% } %>
+            <form action="/admin/schedule/new" method="POST">
+                <!-- Chọn khoa -->
+                <div class="form-group">
+                    <label for="department">Select Department:</label>
+                    <select id="department" name="department_id" onchange="updateSelections()" required>
+                        <option value="">-- Select Department --</option>
+                        <% departments.forEach(department => { %>
+                            <option value="<%= department.department_id %>"><%= department.department_name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <!-- Chọn phòng khám -->
+                <div class="form-group">
+                    <label for="clinicRoom">Select Clinic Room:</label>
+                    <select id="clinicRoom" name="clinicRoom_id" disabled required>
+                        <option value="">-- Select Clinic Room --</option>
+                    </select>
+                </div>
+
+                <!-- Chọn bác sĩ -->
+                <div class="form-group">
+                    <label for="doctor">Select Doctor:</label>
+                    <select id="doctor" name="doctor_id" disabled required>
+                        <option value="">-- Select Doctor --</option>
+                    </select>
+                </div>
+
+                <!-- Chọn ngày trực -->
+                <div class="form-group">
+                    <label for="shift_date">Select Shift Date:</label>
+                    <input type="date" id="shift_date" name="shift_date" required>
+                </div>
+
+                <!-- Chọn ca trực -->
+                <div class="form-group">
+                    <label for="shift_period">Select Shift Period:</label>
+                    <select id="shift_period" name="shift_period_id" required>
+                        <option value="">-- Select Shift Period --</option>
+                        <% shiftPeriods.forEach(shiftPeriod => { %>
+                            <option value="<%= shiftPeriod.shift_period_id %>">
+                                <%= shiftPeriod.shift_period_name %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Add Shift Schedule</button>
+            </form>
+        </main>
+    </body>
+    </html>
+
+<% customJS = `<script src="/js/admin/addSchedule.js" type="text/javascript" defer></script>` %>

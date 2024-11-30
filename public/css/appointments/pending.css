@@ -1,0 +1,183 @@
+.booking-layout {
+  display: flex;
+}
+
+.sidebar {
+  width: 20%;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  height: 50px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar ul li a.selected {
+  text-decoration: none;
+  color: white;
+}
+
+.content {
+  width: 70%;
+  padding: 20px;
+  margin-left: 70px;
+}
+
+.content-section {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appointment-card {
+  display: flex;
+  justify-content: space-between; /* Chia đều khoảng cách giữa các phần */
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  position: relative;
+  border: 1px solid #ddd;
+  margin-bottom: 20px; /* Khoảng cách giữa các card */
+}
+
+.appointment-card .info {
+  flex: 1; /* Phần thông tin chiếm không gian lớn hơn */
+  display: flex;
+  flex-direction: column; 
+  margin-left: 10px;
+}
+
+.appointment-card .info p {
+  margin: 5px 0; /* Khoảng cách nhỏ giữa các dòng */
+}
+
+.appointment-card .button-container {
+  display: flex; /* Xếp dọc các nút */
+  justify-content: center;
+  align-items: center; /* Căn phải các nút */
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.appointment-card button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.appointment-card button.disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: default;
+}
+
+.appointment-card button.delete {
+  margin: 0 10px;
+  background-color: #e74c3c;
+  color: white;
+  cursor: pointer;
+}
+
+.appointment-card button.delete:hover {
+  background-color: #c0392b;
+}
+
+.confirmation-dialog {
+  display: none; /* Ẩn hộp thoại xác nhận */
+  position: absolute;
+  right: 20px;
+  top: calc(70%); /* Xuất hiện ngay dưới phần nút */
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 10;
+}
+
+.confirmation-dialog p {
+  margin: 0 0 10px 0;
+}
+
+.confirmation-dialog button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirmation-dialog .confirm {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.confirmation-dialog .cancel {
+  background-color: #ccc;
+  color: #333;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.page-link {
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
+}
+
+.page-link.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.page-link:hover {
+  background-color: #bdc3c7;
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  background-color: #4caf50;
+  color: white;
+}

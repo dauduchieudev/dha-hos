@@ -1,0 +1,50 @@
+<% customCSS = `<link rel="stylesheet" href="/css/appointments/old.css">` %>
+
+    <div class="sidebar">
+        <ul>
+            <li class="active"><a class="selected" href="/appointment/old">Lịch đã khám</a></li>
+            <li><a href="/appointment/pending">Lịch chưa khám</a></li>
+            <li><a href="/appointment/new">Đặt lịch khám</a></li>
+            <li><a href="/appointment/renew">Đặt lịch tái khám</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h2 class="mb-4">Lịch đã khám</h2>
+        <div id="old-list" class="appointments-list">
+            <% if (appointments.length > 0) { %>
+                <% appointments.forEach(appointment => { %>
+                    <div class="appointment-card">
+                        <div class="info">
+                            <p>Ngày khám: <%= new Date(appointment.appointment_date).toLocaleDateString() %></p>
+                            <p>Thời gian: 
+                                <%= appointment.shift_period_id === 1 ? 'Sáng' : 
+                                    appointment.shift_period_id === 2 ? 'Chiều' : 'Tối' %>
+                            </p>
+                            <p>Khoa: <%= appointment.ClinicRoom.Department.department_name %></p>
+                            <p>Phòng khám: <%= appointment.ClinicRoom.room_name %></p>
+                            <p>Bác sĩ: <%= appointment.Doctor.User.full_name %></p>
+                        </div>
+                        <a href="/appointment/results/<%= appointment.appointment_id %>" 
+                            class="btn view-results">
+                            Kết quả khám
+                        </a>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>Không có lịch khám đã hoàn thành.</p>
+            <% } %>
+        </div>
+    
+        <!-- Phân trang -->
+        <div id="old-pagination" class="pagination-container">
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="/appointment/old?page=<%= i %>" 
+                   class="page-link <%= i === currentPage ? 'active' : '' %>">
+                    <%= i %>
+                </a>
+            <% } %>
+        </div>
+    </div>
+
+<% customJS = "" %>

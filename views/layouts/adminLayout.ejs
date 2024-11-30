@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Admin Panel' %></title>
+    <link rel="stylesheet" href="/css/admin/layout.css">
+    <%- customCSS || '' %>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-section">
+            <img src="/images/logo.png" alt="Logo Bệnh Viện DHA" class="logo">
+            <h1 class="hospital-name">Bệnh Viện DHA</h1>
+        </div>
+
+        <% if (isAuthenticated) { %>
+            <div class="auth-buttons">
+                <!-- Nút Back to Dashboard -->
+                <a href="/home" class="back-to-dashboard">Back to the dashboard</a>
+
+                <!-- Nút Đăng xuất -->
+                <form action="/logout" method="GET" style="display: inline;">
+                    <button class="btn logout-btn" type="submit">Log out</button>
+                </form>
+            </div>
+        <% } else { %>
+            <div class="auth-buttons">
+                <!-- Nút Đăng nhập và Đăng ký -->
+                <form action="/login" method="GET" style="display: inline;">
+                    <button class="btn login-btn" type="submit">Đăng nhập</button>
+                </form>
+                <form action="/signup" method="GET" style="display: inline;">
+                    <button class="btn signup-btn" type="submit">Đăng kí</button>
+                </form>
+            </div>
+        <% } %>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Bệnh Viện DHA | Địa chỉ: Số 144 Đường Xuân Thuỷ, Quận Cầu Giấy, Hà Nội | Điện thoại: 0987 654 321</p>
+    </footer>
+
+    <%- customJS || '' %>
+</body>
+</html>

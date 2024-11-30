@@ -1,0 +1,59 @@
+<% customCSS = `<link rel="stylesheet" href="/css/doctor/shiftschedule.css">` %>
+
+<div class="shift-schedule-container mt-4">
+    <h3>Lịch Trực Của Bác Sĩ</h3>
+
+    <!-- Thanh tìm kiếm -->
+    <form action="/doctor/search-shift-schedule" method="GET" class="search-shift-schedule">
+        <div class="row">
+            <div class="col-2">
+                <input type="date" name="date" class="form-control" value="<%= searchDate %>" placeholder="Tìm kiếm theo ngày trực">
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+
+    <button id="resetSearch" class="btn btn-secondary">Hiển thị lại tất cả lịch trực</button>
+
+    <!-- Bảng Lịch Trực -->
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Bác sĩ</th>
+                <th>Ngày</th>
+                <th>Ca Trực</th>
+                <th>Phòng Khám</th>
+                <th>Ghi Chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% shiftSchedules.forEach(schedule => { %>
+                <tr>
+                    <td><%= user.full_name %></td>
+                    <td><%= new Date(schedule.shift_date).toLocaleDateString('en-GB') %></td>
+                    <td><%= schedule.ShiftPeriod.shift_period_name %></td>
+                    <td><%= schedule.ClinicRoom.room_name %></td>
+                    <td>Đảm nhận khám bệnh nhân</td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <div class="pagination">
+        <% if (currentPage > 1) { %>
+            <a href="/doctor/shift-schedule?page=1" class="btn btn-outline-primary">Trang Đầu</a>
+            <a href="/doctor/shift-schedule?page=<%= currentPage - 1 %>" class="btn btn-outline-primary">Trước</a>
+        <% } %>
+
+        <% if (currentPage < totalPages) { %>
+            <a href="/doctor/shift-schedule?page=<%= currentPage + 1 %>" class="btn btn-outline-primary">Tiếp</a>
+            <a href="/doctor/shift-schedule?page=<%= totalPages %>" class="btn btn-outline-primary">Trang Cuối</a>
+        <% } %>
+    </div>
+</div>
+
+
+<% customJS =  `<script src="/js/doctor/shiftschedule.js" type="text/javascript" defer></script>` %>

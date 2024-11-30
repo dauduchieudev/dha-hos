@@ -1,0 +1,94 @@
+/* CSS cho Layout */
+
+/* Body tổng thể */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Màu nền */
+    color: #333;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #66bb6a; /* Xanh lá cây nhạt */
+    color: white;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.hospital-name {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Khoảng cách đều giữa các nút */
+}
+
+.auth-buttons a, .auth-buttons button {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    text-decoration: none; /* Đảm bảo các liên kết không có gạch chân */
+}
+
+/* Nút Back to Dashboard */
+.back-to-dashboard {
+    background-color: #007bff; /* Màu xanh lá cây */
+}
+
+.back-to-dashboard:hover {
+    background-color: #004aad; /* Xanh lá đậm khi hover */
+}
+
+.logout-btn {
+    background-color: #d32f2f; /* Màu đỏ cho nút Đăng xuất */
+}
+
+.logout-btn:hover {
+    background-color: #b71c1c; /* Đỏ đậm hơn */
+}
+
+.login-btn {
+    background-color: #388e3c; /* Xanh lá cây */
+}
+
+.signup-btn {
+    background-color: #007bff; /* Xanh dương */
+}
+
+/* Main */
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e8f5e9; /* Nền xanh lá nhạt */
+    color: #555;
+}

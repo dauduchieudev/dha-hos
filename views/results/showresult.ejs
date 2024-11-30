@@ -1,0 +1,118 @@
+<% customCSS = `<link rel="stylesheet" href="/css/results/showresult.css">` %>
+
+    <div class="sidebar">
+        <ul>
+            <li onclick="toggleSection('diagnosis-section')">Chuẩn đoán</li>
+            <li onclick="toggleSection('test-results-section')">Kết quả xét nghiệm</li>
+            <li onclick="toggleSection('image-results-section')">Kết quả chụp chiếu</li>
+            <li onclick="toggleSection('prescriptions-section')">Đơn thuốc</li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div id="diagnosis-section" class="section">
+            <h3>Chẩn đoán</h3>
+        
+            <div class="form-group">
+                <label for="patient_name">Tên bệnh nhân</label>
+                <input type="text" id="patient_name" name="patient_name" class="form-control" value="<%= patient.User.full_name %>" readonly>
+            </div>
+        
+            <div class="form-group">
+                <label for="blood_type">Nhóm máu</label>
+                <input value="<%= patient.BloodType.blood_type_name %>" readonly>
+            </div>
+        
+            <div id="form-group-allergies" class="form-group">
+                <label for="allergies">Dị ứng</label>
+                <input id="allergies" name="allergies" class="form-control" value="<%= patient.allergies || 'Chưa có' %>" readonly>
+            </div>
+        
+            <div class="form-group">
+                <label for="preliminary_diagnosis">Chẩn đoán sơ bộ</label>
+                <input id="preliminary_diagnosis" name="preliminary_diagnosis" class="form-control"
+                    value="<%= diagnosis ? diagnosis.preliminary_diagnosis : 'Chưa có' %>" readonly>
+            </div>
+        
+            <div class="form-group">
+                <label for="final_diagnosis">Chẩn đoán cuối cùng</label>
+                <input id="final_diagnosis" name="final_diagnosis" class="form-control"
+                    value="<%= diagnosis ? diagnosis.final_diagnosis : 'Chưa có' %>" readonly>
+            </div>
+        
+            <div class="form-group">
+                <label for="treatmentPlan">Kế hoạch điều trị</label>
+                <input id="treatmentPlan" name="treatmentPlan" class="form-control"
+                    value="<%= diagnosis ? diagnosis.treatmentPlan : 'Chưa có' %>" readonly>
+            </div>
+        </div>
+            
+        <div id="test-results-section" class="section">
+            <h3>Kết quả xét nghiệm</h3>
+        
+            <div id="test-result-container">
+                <% if (testResults && testResults.length > 0) { %>
+                    <% testResults.forEach(result => { %>
+                        <div class="test-result">
+                            <h3><strong><%= result.TestIndicator.TestType.test_type_name %></strong></h3>
+                            <p><strong><%= result.TestIndicator.test_indicator_name %>:</strong> <%= result.test_value %> <%= result.TestIndicator.unit %></p>
+                            <p><strong>Ngưỡng trung bình:</strong> <%= result.TestIndicator.reference_range %></p>
+                            <p><strong>Ghi chú:</strong> <%= result.comments || "Chưa có ghi chú" %></p>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>Chưa có kết quả xét nghiệm.</p>
+                <% } %>
+            </div>
+        </div>
+        
+        <div id="image-results-section" class="section">
+            <h3>Kết quả chụp chiếu</h3>
+        
+            <% if (imageResults && imageResults.length > 0) { %>
+                <% imageResults.forEach(result => { %>
+                    <div class="image-result">
+                        <p><strong>Loại hình ảnh:</strong> <%= result.ImagingType.imaging_type_name %></p>
+                        <p><strong>Link ảnh:</strong> <a href="<%= result.image_url %>" target="_blank" style="color: #007bff; text-decoration: none;">Xem ảnh</a></p>
+                        <p><strong>Nhận xét:</strong> <%= result.comments || "Chưa có nhận xét" %></p>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>Chưa có kết quả chụp chiếu.</p>
+            <% } %>
+        </div>
+        
+        
+        <div id="prescriptions-section" class="section">
+            <h3>Đơn thuốc</h3>
+    
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Số thứ tự</th>
+                        <th>Tên thuốc</th>
+                        <th>Cách sử dụng</th>
+                        <th>Tổng số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (prescriptionDetails && prescriptionDetails.length > 0) { %> 
+                        <% prescriptionDetails.forEach((prescriptionDetail, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= prescriptionDetail.Medication.medication_name %></td>
+                                <td><%= prescriptionDetail.usageInstructions %></td>
+                                <td><%= prescriptionDetail.quantity %> <%= prescriptionDetail.unit %></td> 
+                            </tr>
+                        <% }) %>
+                    <% } else { %>  
+                        <tr>
+                            <td colspan="5" class="text-center">Không có đơn thuốc nào.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+
+<% customJS = `<script src="/js/results/showresult.js" type="text/javascript" defer></script>` %>

@@ -1,0 +1,155 @@
+.booking-layout {
+  display: flex;
+}
+
+.sidebar {
+  width: 20%;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  height: 50px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar ul li a.selected {
+  text-decoration: none;
+  color: white;
+}
+
+.content {
+  width: 70%;
+  padding: 20px;
+  margin-left: 70px;
+}
+
+.content-section {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.redirect-button {
+  background-color: #45a049;
+  color: white;
+  border: none;
+  height: 44px;
+  padding: 0 17px;
+  border-radius: 22px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.redirect-button:hover {
+  background-color: #3e8e41;
+}
+
+.header-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.new-detail {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.description-textarea {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.result-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.result-button:hover {
+  background-color: #0056b3;
+}
+
+.hidden-form {
+  display: none;
+  margin-top: 20px;
+}
+
+.result-api {
+  margin-bottom: 15px;
+  font-style: italic;
+  color: #555;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.styled-select {
+  width: 100%;
+  max-width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.submit-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  background-color: #4caf50;
+  color: white;
+}

@@ -1,0 +1,68 @@
+<% customCSS = `<link rel="stylesheet" href="/css/appointments/new.css">` %>
+
+  <div class="sidebar">
+    <ul>
+        <li><a href="/appointment/old">Lịch đã khám</a></li>
+        <li><a href="/appointment/pending">Lịch chưa khám</a></li>
+        <li class="active"><a class="selected" href="/appointment/new">Đặt lịch khám</a></li>
+        <li><a href="/appointment/renew">Đặt lịch tái khám</a></li>
+    </ul>
+  </div>
+
+  <div class="content"> 
+    <div id="new" class="content-section">
+      <h2 class="header-title">Đặt lịch khám mới</h2>
+
+      <% if (error) { %>
+        <div class="error-message" style="color: red; font-weight: bold;">
+            <%= error %>
+        </div>
+      <% } %>
+  
+      <div class="new-detail">Mô tả bệnh:</div>
+      <textarea id="description" name="description" placeholder="Viết ngắn gọn các triệu chứng của bạn" rows="4" cols="50" class="description-textarea"></textarea>
+  
+      <button class="result-button">Kết quả</button>
+  
+      <form method="POST" action="/appointment/new/create-appointment" class="hidden-form" id="new-appointment-form">
+          <div class="result-api"></div>
+  
+          <input type="hidden" id="hidden-description" name="description">
+          <input type="hidden" name="user_id" value="<%= user.user_id %>">
+
+          <label for="department">Thay đổi khoa nếu bạn muốn:</label>
+          <select id="department" name="department" class="styled-select">
+              <% if (departments && departments.length > 0) { %>
+                <% departments.forEach(department => { %>
+                  <option value="<%= department.department_id %>"><%= department.department_name %></option>
+                <% }); %>
+              <% } else { %>
+                  <option value="" disabled>Không có khoa nào</option>
+              <% } %>
+          </select>
+
+          <label for="clinic">Chọn phòng khám:</label>
+          <select id="clinic" name="clinic" class="styled-select">
+            <option value="">Chọn phòng khám</option>
+          </select>
+  
+          <label for="date">Chọn ngày:</label>
+          <input type="date" id="new-date" name="date" class="styled-select">
+  
+          <label for="period">Chọn buổi:</label>
+          <select id="period" name="period" class="styled-select">
+              <option value="">Chọn buổi</option>
+              <option value="1">Sáng</option>
+              <option value="2">Chiều</option>
+              <option value="3">Tối</option>
+          </select>
+  
+          <label for="doctor">Chọn bác sĩ:</label>
+          <select id="doctor" name="doctor" class="styled-select"></select>
+  
+          <button type="submit" class="submit-button">Đặt lịch</button>
+      </form>
+    </div>
+  </div>
+
+<% customJS = `<script src="/js/appointments/new.js" type="text/javascript" defer></script>` %>

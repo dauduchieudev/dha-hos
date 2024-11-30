@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bệnh viện DHA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/userhome.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="banner-container">
+        <img src="images/banner.avif" alt="Banner Bệnh Viện ABC" class="banner-image">
+        <div class="banner-overlay"></div>
+        
+        <form id="banner-form" class="banner-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 40px;">
+            <h2>Lựa chọn chuyên khoa khám phù hợp với AI</h2>
+            <div class="g-recaptcha" data-sitekey="6Le_Q4MqAAAAALDkCvOlN5r1DN89oNqb8sqHtdD6"></div>
+            <div class="search-bar">
+                <input type="text" id="search-input" class="search-input" placeholder="Nhập các triệu chứng bệnh...">
+                <button type="submit" class="search-button">Gửi</button>
+            </div>
+            <p id="result" style="font-style: italic; margin-top: 10px;"></p>
+        </form>
+    </div>
+    
+
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <img src="images/logo.png" alt="Logo Bệnh Viện ABC">
+            <h1 style="font-size: 18px; margin: 0;">Bệnh Viện DHA</h1>
+        </div>
+        <div class="navbar">
+            <a href="#services">Dịch Vụ</a>
+            <a href="#appointment">Đặt Lịch Khám</a>
+            <a href="#search-medicine">Tra Cứu Thuốc</a>
+            <a href="#view-results">Xem Kết Quả Khám</a>
+            <a href="#our-doctors">Đội Ngũ Bác Sĩ</a>
+        </div>
+        
+        <div class="auth-buttons">
+            <span>Xin chào, <%= user.full_name %>!</span>
+            
+            <form action="/logout" method="GET" style="display: inline;">
+                <button type="submit">Đăng xuất</button>
+            </form>
+        </div>
+    
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <div id="services" class="section">
+            <div class="title">
+                <h2>Dịch Vụ Của Chúng Tôi</h2>
+                <a href="#sevice-detail">Xem chi tiết <i class="fa-solid fa-up-right-from-square"></i></a>
+            </div>
+            <div class="cards">
+                
+                <div class="card">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <div class="title">
+                        <p>Tư Vấn Từ Chuyên Gia Hàng Đầu</p>
+                    </div>
+                    <div class="description">
+                        <p>Tận hưởng dịch vụ tư vấn trực tiếp từ các chuyên gia y tế hàng đầu trong và ngoài nước, mang đến giải pháp y tế tối ưu nhất cho sức khỏe của bạn.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <div class="title">
+                        <p>Đặt Lịch Khám Từ Xa</p>
+                    </div>
+                    <div class="description">
+                        <p>Đặt lịch khám dễ dàng ngay tại nhà với chuyên khoa phù hợp được gợi ý từ AI dựa trên triệu chứng của bạn.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-file-medical"></i>
+                    <div class="title">
+                        <p>Xem Lại Kết Quả Khám</p>
+                    </div>
+                    <div class="description">
+                        <p>Truy cập kết quả khám nhanh chóng, tiện lợi và an toàn, giúp theo dõi sức khỏe dễ dàng hơn.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-pills"></i>
+                    <div class="title">
+                        <p>Tra Cứu Thuốc Nhanh Chóng</p>
+                    </div>
+                    <div class="description">
+                        <p>Tìm kiếm thông tin thuốc chi tiết và chính xác nhất giúp bạn yên tâm khi sử dụng.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-hospital"></i>
+                    <div class="title">
+                        <p>Hệ Thống Y Tế Hiện Đại</p>
+                    </div>
+                    <div class="description">
+                        <p>Trang bị công nghệ tiên tiến và đội ngũ chuyên gia hàng đầu, chúng tôi cam kết mang đến dịch vụ y tế hiện đại nhất.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-ambulance"></i>
+                    <div class="title">
+                        <p>Hệ Thống Cấp Cứu Nhanh Chóng</p>
+                    </div>
+                    <div class="description">
+                        <p>Đội ngũ cấp cứu phản hồi 24/7, đảm bảo xử lý kịp thời và chính xác trong mọi tình huống khẩn cấp.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Đặt lịch khám -->
+        <section id="appointment" class="modern-section">
+            <div class="content">
+                <h2>Đặt Lịch Khám Dễ Dàng</h2>
+                <p>Chỉ cần một cú nhấp chuột, bạn đã có thể đặt lịch khám với bác sĩ phù hợp.</p>
+                <form action="/appointment" method="GET">
+                    <button class="btn-primary">Đặt Lịch Ngay</button>
+                </form>
+            </div>
+            <div class="image" style="background-image: url('images/hb.webp')"></div>
+        </section>
+
+        <!-- Tra cứu thuốc -->
+        <section id="search-medicine" class="modern-section reverse">
+            <div class="content">
+                <h2>Tra Cứu Thông Tin Thuốc</h2>
+                <p>Tra cứu thông tin về các loại thuốc nhanh chóng và chính xác.</p>
+                <button class="btn-secondary">Tra Cứu Ngay</button>
+            </div>
+            <div class="image" style="background-image: url('images/mdc.jpeg');"></div>
+        </section>
+
+        <!-- Xem kết quả khám -->
+        <section id="view-results" class="modern-section">
+            <div class="content">
+                <h2>Xem Kết Quả Khám</h2>
+                <p>Truy cập kết quả khám và các thông tin sức khỏe của bạn một cách tiện lợi.</p>
+                <form action="/view-result" method="GET">
+                    <button class="btn-highlight">Xem Ngay</button>
+                </form>
+            </div>
+            <div class="image" style="background-image: url('images/rc.webp');"></div>
+        </section>
+
+        <!-- Đội ngũ bác sĩ -->
+        <section id="our-doctors" class="modern-section reverse">
+            <div class="content">
+                <h2>Đội Ngũ Bác Sĩ</h2>
+                <p>Gặp gỡ đội ngũ bác sĩ giàu kinh nghiệm và tận tâm của chúng tôi.</p>
+                <button class="btn-primary">Xem Đội Ngũ</button>
+            </div>
+            <div class="image" style="background-image: url('images/doctor.jpg');"></div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Bệnh Viện DHA | Địa chỉ: Số 144 Đường Xuân Thuỷ, Quận Cầu Giấy, Hà Nội | Điện thoại: 0987 654 321</p>
+    </footer>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="/js/userhome.js" type="text/javascript" defer></script>
+</body>
+
