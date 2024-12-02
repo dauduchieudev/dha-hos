@@ -366,7 +366,7 @@ class AppointmentController {
                             </select>
                             
                             <label for="date" class="form-label">Chọn ngày:</label>
-                            <input type="date" id="date" name="date" class="styled-select input-date" onfocus="this.min = new Date().toISOString().split('T')[0]; this.max = new Date().toISOString().split('T')[0]">
+                            <input type="date" id="date" name="date" class="styled-select input-date">
                             
                             <label for="period" class="form-label">Chọn buổi:</label>
                             <select id="period" name="period" class="styled-select select-period">
