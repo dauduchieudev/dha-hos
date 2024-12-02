@@ -358,7 +358,7 @@ class DoctorController {
         })
 
         return res.render('doctor/editTestResult', {
-            layout: "layouts/Doctorlayout",
+            layout: "layouts/doctorLayout",
             user,
             testResult,
             testIndicator
