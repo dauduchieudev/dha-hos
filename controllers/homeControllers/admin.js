@@ -1,12 +1,16 @@
-const User = require('../../models/User.js');
+const { Op } = require('sequelize');  // Import Op từ Sequelize
+
+const BloodType = require('../../models/BloodType.js');
 const ClinicRoom = require('../../models/ClinicRoom.js');
 const Doctor = require('../../models/Doctor.js');
 const Department = require('../../models/Department.js');
 const DoctorDepartment = require('../../models/DoctorDepartment.js');
+const JobTitle = require('../../models/JobTitle.js');
 const Medication = require('../../models/Medication.js');
+const Patient = require('../../models/Patient.js');
 const ShiftSchedule = require('../../models/ShiftSchedule.js');
 const ShiftPeriod = require('../../models/ShiftPeriod.js');
-const { Op } = require('sequelize');  // Import Op từ Sequelize
+const User = require('../../models/User.js');
 
 class AdminController {
     // [GET] /admin
@@ -24,55 +28,299 @@ class AdminController {
         }
     }
 
-    // [GET] /admin/users/new
-    showAddUserForm(req, res) {
-        if (req.isAuthenticated()) {
-            res.render('admin/addUser', { 
-                layout: 'layouts/adminLayout',
-                title: 'Add User',
-                isAuthenticated: true,
-                user: req.user, 
-                errorMessage: null 
-            });
-        } else {
-            res.redirect('/home');
-        }
-    }
-
-    // [POST] /admin/users/new
-    async addUser(req, res) {
+    // [GET] /admin/patients/new
+    async showAddPatientForm(req, res) {
         if (req.isAuthenticated()) {
             try {
-                const { user_name, password, role, full_name, birthdate, gender, phone_number, address, email } = req.body;
-
-                // Thêm người dùng mới
-                await User.create({
-                    user_name,
-                    password, 
-                    role,
-                    full_name,
-                    birthdate,
-                    gender,
-                    phone_number,
-                    address,
-                    email,
-                });
-
-                res.redirect('/admin');
-            } catch (error) {
-                console.error('Error adding user:', error);
-                res.render('admin/addUser', { 
+                // Lấy danh sách nhóm máu để hiển thị trong form
+                const bloodTypes = await BloodType.findAll();
+                
+                res.render('admin/addPatient', {
                     layout: 'layouts/adminLayout',
-                    title: 'Add User',
+                    title: 'Add New Patient',
                     isAuthenticated: true,
-                    user: req.user, 
-                    errorMessage: 'Không thể thêm người dùng!' 
+                    user: req.user,
+                    bloodTypes, // Danh sách nhóm máu
+                    errorMessage: null,
+                });
+            } catch (error) {
+                console.error('Error loading blood types:', error);
+                res.render('admin/addPatient', {
+                    layout: 'layouts/adminLayout',
+                    title: 'Add New Patient',
+                    isAuthenticated: true,
+                    user: req.user,
+                    bloodTypes: [],
+                    errorMessage: 'Không thể tải thông tin nhóm máu!',
                 });
             }
         } else {
             res.redirect('/home');
         }
     }
+
+    // [POST] /admin/patients/new
+    async addPatient(req, res) {
+        if (req.isAuthenticated()) {
+            try {
+                const { user_name, password, full_name, birthdate, gender, phone_number, address, email, blood_type_id, allergies } = req.body;
+
+                // Bước 1: Thêm người dùng vào bảng Users
+                const user = await User.create({
+                    user_name,
+                    password,
+                    role: 'Bệnh nhân', // Vai trò mặc định là Bệnh nhân
+                    full_name,
+                    birthdate,
+                    gender,
+                    phone_number,
+                    address,
+                    email: email || null, // Email có thể null
+                });
+
+                // Bước 2: Thêm bệnh nhân vào bảng Patients
+                await Patient.create({
+                    user_id: user.user_id, // Lấy user_id từ bảng Users
+                    blood_type_id: blood_type_id || null, // Nhóm máu có thể null
+                    allergies: allergies || null, // Dị ứng có thể null
+                });
+
+                res.redirect('/admin/patients/new'); // Sau khi thêm xong, quay lại form thêm bệnh nhân
+            } catch (error) {
+                console.error('Error adding patient:', error);
+                try {
+                    // Lấy danh sách nhóm máu để hiển thị trong form
+                    const bloodTypes = await BloodType.findAll();
+                    
+                    res.render('admin/addPatient', {
+                        layout: 'layouts/adminLayout',
+                        title: 'Add New Patient',
+                        isAuthenticated: true,
+                        user: req.user,
+                        bloodTypes, // Danh sách nhóm máu
+                        errorMessage: 'Không thể thêm bệnh nhân!'
+                    });
+                } catch (error) {
+                    console.error('Error loading blood types:', error);
+                    res.render('admin/addPatient', {
+                        layout: 'layouts/adminLayout',
+                        title: 'Add New Patient',
+                        isAuthenticated: true,
+                        user: req.user,
+                        bloodTypes: [],
+                        errorMessage: 'Không thể tải thông tin nhóm máu!',
+                    });
+                }
+            }
+        } else {
+            res.redirect('/home');
+        }
+    }
+
+    // [GET] /admin/doctors/new
+    async showAddDoctorForm(req, res) {
+        if (req.isAuthenticated()) {
+            try {
+                // Lấy danh sách các khoa và chức danh công việc để hiển thị trong form
+                const departments = await Department.findAll();
+                const jobTitles = await JobTitle.findAll();
+
+                res.render('admin/addDoctor', {
+                    layout: 'layouts/adminLayout',
+                    title: 'Add New Doctor',
+                    isAuthenticated: true,
+                    user: req.user,
+                    departments,  // Truyền danh sách khoa
+                    jobTitles,    // Truyền danh sách chức danh công việc
+                    errorMessage: null
+                });
+            } catch (error) {
+                console.error('Error loading form data:', error);
+                res.render('admin/addDoctor', {
+                    layout: 'layouts/adminLayout',
+                    title: 'Add New Doctor',
+                    isAuthenticated: true,
+                    user: req.user,
+                    departments: [],
+                    jobTitles: [],
+                    errorMessage: 'Không thể tải dữ liệu!'
+                });
+            }
+        } else {
+            res.redirect('/home');
+        }
+    }
+
+    // [POST] /admin/doctors/new
+    async addDoctor(req, res) {
+        if (req.isAuthenticated()) {
+            try {
+                const { 
+                    user_name, password, full_name, birthdate, gender, 
+                    phone_number, address, email, department_id, 
+                    job_title_id, report_to, specialty 
+                } = req.body;
+    
+                // Bước 1: Thêm người dùng vào bảng Users
+                const user = await User.create({
+                    user_name,
+                    password,
+                    role: 'Bác sĩ', // Vai trò mặc định là Bác sĩ
+                    full_name,
+                    birthdate,
+                    gender,
+                    phone_number,
+                    address,
+                    email: email || null, // Email có thể null
+                });
+    
+                // Bước 2: Thêm bác sĩ vào bảng Doctors
+                const doctor = await Doctor.create({
+                    user_id: user.user_id, // Lấy user_id từ bảng Users
+                    job_title_id, // Chức danh công việc
+                    report_to: report_to || null, // Cấp trên (có thể để null)
+                    specialty, // Chuyên môn
+                });
+    
+                // Bước 3: Liên kết bác sĩ với các khoa trong bảng DoctorDepartment
+                if (Array.isArray(department_id) && department_id.length > 0) {
+                    // Lặp qua tất cả các department_id được chọn và tạo liên kết
+                    for (let dept_id of department_id) {
+                        await DoctorDepartment.create({
+                            Departments_department_id: dept_id, // Khoa
+                            Doctors_doctor_id: doctor.doctor_id, // Bác sĩ
+                        });
+                    }
+                } else {
+                    throw new Error("Please select at least one department.");
+                }
+    
+                // Sau khi thêm bác sĩ thành công, quay lại form thêm bác sĩ
+                res.redirect('/admin/doctors/new');
+            } catch (error) {
+                console.error('Error adding doctor:', error);
+                try {
+                    // Lấy danh sách các khoa và chức danh công việc để hiển thị trong form
+                    const departments = await Department.findAll();
+                    const jobTitles = await JobTitle.findAll();
+        
+                    res.render('admin/addDoctor', {
+                        layout: 'layouts/adminLayout',
+                        title: 'Add New Doctor',
+                        isAuthenticated: true,
+                        user: req.user,
+                        departments,  // Truyền danh sách khoa
+                        jobTitles,    // Truyền danh sách chức danh công việc
+                        errorMessage: 'Không thể thêm bác sĩ! '
+                    });
+                } catch (error) {
+                    console.error('Error loading form data:', error);
+                    res.render('admin/addDoctor', {
+                        layout: 'layouts/adminLayout',
+                        title: 'Add New Doctor',
+                        isAuthenticated: true,
+                        user: req.user,
+                        departments: [],
+                        jobTitles: [],
+                        errorMessage: 'Không thể tải dữ liệu!'
+                    });
+                }
+            }
+        } else {
+            res.redirect('/home');
+        }
+    }    
+
+    // [GET] /admin/doctors/search
+    async searchDoctorByUsername(req, res) {
+        if (req.isAuthenticated()) {
+            try {
+                const { user_name } = req.query;
+
+                if (!user_name) {
+                    return res.json([]); // Nếu không có từ khóa, trả về mảng rỗng
+                }
+
+                // Tìm bác sĩ theo user_name bắt đầu với từ khóa
+                const doctors = await Doctor.findAll({
+                    include: {
+                        model: User,
+                        where: {
+                            user_name: {
+                                [Op.like]: `${user_name}%` // Tìm kiếm bác sĩ có user_name bắt đầu bằng từ khóa
+                            }
+                        },
+                        attributes: ['user_name', 'full_name'], // Chỉ lấy user_name và full_name
+                        order: [
+                            ['user_name', 'ASC']  // Sắp xếp theo user_name theo thứ tự tăng dần
+                        ]
+                    }
+                });
+
+                // Trả về danh sách các bác sĩ có doctor_id, user_name và full_name
+                res.json(doctors.map(doctor => ({
+                    doctor_id: doctor.doctor_id, // Trả về doctor_id
+                    user_name: doctor.User.user_name,
+                    full_name: doctor.User.full_name
+                })));
+            } catch (error) {
+                console.error('Error searching doctors:', error);
+                res.json([]); // Trả về mảng rỗng nếu có lỗi
+            }
+        } else {
+            res.redirect('/home');
+        }
+    }
+
+    // // [GET] /admin/users/new
+    // showAddUserForm(req, res) {
+    //     if (req.isAuthenticated()) {
+    //         res.render('admin/addUser', { 
+    //             layout: 'layouts/adminLayout',
+    //             title: 'Add User',
+    //             isAuthenticated: true,
+    //             user: req.user, 
+    //             errorMessage: null 
+    //         });
+    //     } else {
+    //         res.redirect('/home');
+    //     }
+    // }
+
+    // // [POST] /admin/users/new
+    // async addUser(req, res) {
+    //     if (req.isAuthenticated()) {
+    //         try {
+    //             const { user_name, password, role, full_name, birthdate, gender, phone_number, address, email } = req.body;
+
+    //             // Thêm người dùng mới
+    //             await User.create({
+    //                 user_name,
+    //                 password, 
+    //                 role,
+    //                 full_name,
+    //                 birthdate,
+    //                 gender,
+    //                 phone_number,
+    //                 address,
+    //                 email,
+    //             });
+
+    //             res.redirect('/admin');
+    //         } catch (error) {
+    //             console.error('Error adding user:', error);
+    //             res.render('admin/addUser', { 
+    //                 layout: 'layouts/adminLayout',
+    //                 title: 'Add User',
+    //                 isAuthenticated: true,
+    //                 user: req.user, 
+    //                 errorMessage: 'Không thể thêm người dùng!' 
+    //             });
+    //         }
+    //     } else {
+    //         res.redirect('/home');
+    //     }
+    // }
 
     // [GET] /admin/users?page=1
     async listUsers(req, res) {
@@ -239,7 +487,17 @@ class AdminController {
                 res.redirect('/admin/users'); // Quay lại danh sách người dùng
             } catch (error) {
                 console.error('Error updating user:', error);
-                res.redirect('/admin/users'); // Quay lại danh sách nếu lỗi
+                res.render('admin/users', {
+                    layout: 'layouts/adminLayout',
+                    title: 'User List',
+                    isAuthenticated: true,
+                    user: req.user,
+                    users: [],
+                    errorMessage: `Không thể cập nhật người dùng!`,
+                    currentPage: 1, // Trang đầu tiên
+                    totalPages: 1 // Chỉ có một trang
+                });
+                // res.redirect('/admin/users'); // Quay lại danh sách nếu lỗi
             }
         } else {
             res.redirect('/home');
@@ -256,8 +514,28 @@ class AdminController {
                     return res.redirect('/admin/users'); // Quay lại danh sách nếu không tìm thấy
                 }
 
-                await user.destroy(); // Xóa người dùng
-                res.redirect('/admin/users'); // Quay lại danh sách sau khi xóa
+                if (user.role === 'Bệnh nhân') {
+                    // Tìm bệnh nhân và xóa trong bảng Patients
+                    const patient = await Patient.findOne({ where: { user_id: user.user_id } });
+                    if (patient) {
+                        await patient.destroy(); // Xóa bệnh nhân
+                    }
+                } else if (user.role === 'Bác sĩ') {
+                    // Tìm bác sĩ và xóa trong bảng Doctors và liên kết trong bảng DoctorDepartment
+                    const doctor = await Doctor.findOne({ where: { user_id: user.user_id } });
+                    if (doctor) {
+                        await doctor.destroy(); // Xóa bác sĩ
+                    }
+                } else if (user.role === 'Quản lý') {
+                    // Không thể xóa người dùng có role là Quản lý
+                    throw new Error();
+                }
+
+                // Xóa người dùng trong bảng Users
+                await user.destroy(); 
+
+                // Quay lại danh sách sau khi xóa
+                res.redirect('/admin/users');
             } catch (error) {
                 console.error('Error deleting user:', error);
                 res.render('admin/users', {
@@ -266,11 +544,10 @@ class AdminController {
                     isAuthenticated: true,
                     user: req.user,
                     users: [],
-                    errorMessage: `Không thể xoá người dùng!`,
+                    errorMessage: 'Không thể xoá người dùng!',
                     currentPage: 1, // Trang đầu tiên
                     totalPages: 1 // Chỉ có một trang
                 });
-                // res.redirect('/admin/users'); // Quay lại danh sách nếu lỗi
             }
         } else {
             res.redirect('/home');
@@ -292,7 +569,6 @@ class AdminController {
         }
     }
     
-
     // [POST] /admin/medicine/new
     async addMedicine(req, res) {
         if (req.isAuthenticated()) {
@@ -306,7 +582,7 @@ class AdminController {
                     description,
                 });
 
-                res.redirect('/admin');
+                res.redirect('/admin/medicine/new');
             } catch (error) {
                 console.error('Error adding medication:', error);
                 res.render('admin/addMedicine', { 
@@ -341,6 +617,7 @@ class AdminController {
 
                 const totalPages = Math.ceil(totalMedications / limit); // Tính tổng số trang
 
+                
                 res.render('admin/medications', { 
                     layout: 'layouts/adminLayout',
                     title: 'Medication List',
@@ -351,6 +628,9 @@ class AdminController {
                     totalPages,
                     errorMessage: null,
                 });
+            
+
+
             } catch (error) {
                 console.error('Error fetching medication list:', error);
                 res.redirect('/admin'); // Quay lại Dashboard nếu lỗi
@@ -465,7 +745,17 @@ class AdminController {
                 res.redirect('/admin/medicine'); // Quay lại danh sách medications
             } catch (error) {
                 console.error('Error updating medication:', error);
-                res.redirect('/admin/medicine'); // Quay lại danh sách nếu lỗi
+                res.render('admin/medications', {
+                    layout: 'layouts/adminLayout',
+                    title: 'Medication List',
+                    isAuthenticated: true,
+                    user: req.user,
+                    medications: [],
+                    errorMessage: 'Không thể cập nhật thuốc!',
+                    currentPage: 1,
+                    totalPages: 1
+                });
+                // res.redirect('/admin/medicine'); // Quay lại danh sách nếu lỗi
             }
         } else {
             res.redirect('/home');
@@ -486,7 +776,17 @@ class AdminController {
                 res.redirect('/admin/medicine'); // Quay lại danh sách sau khi xóa
             } catch (error) {
                 console.error('Error deleting medication:', error);
-                res.redirect('/admin/medicine'); // Quay lại danh sách nếu có lỗi
+                res.render('admin/medications', {
+                    layout: 'layouts/adminLayout',
+                    title: 'Medication List',
+                    isAuthenticated: true,
+                    user: req.user,
+                    medications: [],
+                    errorMessage: 'Không thể xoá thuốc!',
+                    currentPage: 1,
+                    totalPages: 1
+                });
+                // res.redirect('/admin/medicine'); // Quay lại danh sách nếu có lỗi
             }
         } else {
             res.redirect('/home');
@@ -525,6 +825,8 @@ class AdminController {
                     title: 'Add Shift Schedule',
                     isAuthenticated: true,
                     user: req.user,
+                    departments: [],
+                    shiftPeriods: [],
                     errorMessage: 'Không thể tải dữ liệu!'
                 });
             }
@@ -546,17 +848,44 @@ class AdminController {
                     shift_date,       // shift_date lấy từ form
                     shift_period_id,  // shift_period_id lấy từ form
                 });
-
-                res.redirect('/admin'); // Quay lại danh sách lịch trực hoặc nơi quản lý lịch trực
+                
+                res.redirect('/admin/schedule/new');
             } catch (error) {
                 console.error('Error adding schedule:', error);
-                res.render('admin/addSchedule', {
-                    layout: 'layouts/adminLayout',
-                    title: 'Add Shift Schedule',
-                    isAuthenticated: true,
-                    user: req.user,
-                    errorMessage: 'Error adding shift schedule.',
-                });
+                try {
+                    // Lấy danh sách khoa
+                    const departments = await Department.findAll({
+                        attributes: ['department_id', 'department_name'],
+                        order: [['department_id', 'ASC']], // Sắp xếp khoa theo department_id
+                    });
+    
+                    // Lấy danh sách ca trực
+                    const shiftPeriods = await ShiftPeriod.findAll({
+                        attributes: ['shift_period_id', 'shift_period_name'],
+                        order: [['shift_period_id', 'ASC']],
+                    });
+    
+                    res.render('admin/addSchedule', {
+                        layout: 'layouts/adminLayout',
+                        title: 'Add Shift Schedule',
+                        isAuthenticated: true,
+                        user: req.user,
+                        departments,
+                        shiftPeriods,
+                        errorMessage: 'Error adding shift schedule.'
+                    });
+                } catch (error) {
+                    console.error('Error loading schedule form:', error);
+                    res.render('admin/addSchedule', {
+                        layout: 'layouts/adminLayout',
+                        title: 'Add Shift Schedule',
+                        isAuthenticated: true,
+                        user: req.user,
+                        departments: [],
+                        shiftPeriods: [],
+                        errorMessage: 'Không thể tải dữ liệu!'
+                    });
+                }
             }
         } else {
             res.redirect('/home');

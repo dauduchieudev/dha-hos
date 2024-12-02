@@ -1,10 +1,23 @@
 async function showForm() {
+    document.querySelector('.result-api').innerText = `Đang phân tích...`;
     try {
-        const response = await fetch('/appointment/new/random-department');
+        const response = await fetch('/appointment/new/get-department', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ symptoms: document.querySelector('#description').value.trim() })
+        });
         const result = await response.json();
 
+        console.log(result)
+
         // Hiển thị khoa được gợi ý
-        document.querySelector('.result-api').innerText = `Bạn nên chọn khoa: ${result.department.department_name}`;
+        if (result.department.department_name == "Non-Medical") {
+            document.querySelector('.result-api').innerText = `Bạn cần nhập đúng triệu chứng y tế!`;
+        } else {
+            document.querySelector('.result-api').innerText = `Bạn nên chọn khoa: ${result.department.department_name}`;
+        }
 
         // Đặt khoa mặc định
         const departmentSelect = document.getElementById('department');

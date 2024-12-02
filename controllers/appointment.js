@@ -7,6 +7,8 @@ const Patient = require("../models/Patient.js");
 const Appointment = require("../models/Appointment.js");
 const MedicalRecord = require("../models/MedicalRecord.js");
 
+const gptSymptonController = require('./gptSympton.js')
+
 class AppointmentController {
 
     // [GET] /appointment/old
@@ -84,7 +86,7 @@ class AppointmentController {
             // Truy vấn danh sách lịch khám
             const { count, rows: appointments } = await Appointment.findAndCountAll({
                 where: { 
-                    status: 'Chờ khám',
+                    status: 'Chờ Khám',
                     patient_id: patient.patient_id
                 },
                 include: [
@@ -183,8 +185,8 @@ class AppointmentController {
             const { count, rows: appointments } = await Appointment.findAndCountAll({
                 where: { 
                     status: 'Đã khám',
-                    patient_id: patient.patient_id
-                },
+                    patient_id: patient.patient_id 
+                }, 
                 include: [
                     {
                         model: Doctor,
@@ -223,16 +225,26 @@ class AppointmentController {
         }
     }
 
-    // [GET] new/get-ramdom-department
-    async getRamdomDepartment(req, res) {
+    // [POST] new/get-department
+    async getDepartment(req, res) {
+        console.log(req.body.symptoms)
+        const dept = await gptSymptonController.getDepBySympton(req.body.symptoms)
+        console.log(dept)
+
         if (req.isAuthenticated()) {
             try {
                 // Lấy tất cả các department từ cơ sở dữ liệu
-                const departments = await Department.findAll();
+                const departments = await Department.findAll(
+                    (dept === "Non-Medical") ? {} : { where: { department_name: dept } }
+                );
     
-                // Chọn ngẫu nhiên một khoa
-                const randomIndex = Math.floor(Math.random() * departments.length);
-                const randomDepartment = departments[randomIndex];
+                // Chọn một khoa
+                let index;
+                if (dept === "Non-Medical") index = Math.floor(Math.random() * departments.length);
+                else index = 0;
+                const randomDepartment = departments[index];
+
+                console.log("randomDept:", randomDepartment)
 
                 // Lấy thêm danh sách phòng khám thuộc khoa
                 const clinics = await ClinicRoom.findAll({
@@ -244,7 +256,7 @@ class AppointmentController {
                 res.status(200).json({
                     department: {
                         department_id: randomDepartment.department_id,
-                        department_name: randomDepartment.department_name,
+                        department_name: (dept === "Non-Medical") ? "Non-Medical" : randomDepartment.department_name,
                     },
                     clinics: clinics.map(clinic => ({
                         id: clinic.clinicRoom_id,
@@ -427,7 +439,7 @@ class AppointmentController {
     // [POST] /create-appointment
     async createAppointment(req, res) {
         try {
-            const { description, user_id, department, clinic, date, period, doctor } = req.body;
+            const { symptoms, user_id, department, clinic, date, period, doctor } = req.body;
 
             const patient = await Patient.findOne({
                 where: {
@@ -466,7 +478,7 @@ class AppointmentController {
                 doctor_id: doctor,
                 medical_record_id: newMedicalRecord.medical_record_id,
                 clinicRoom_id: clinic,
-                symptoms: description,
+                symptoms: symptoms,
                 appointment_date: date,
                 shift_period_id: period,
             });

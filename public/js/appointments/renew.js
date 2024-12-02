@@ -107,6 +107,8 @@ async function fetchDoctors() {
             const result = await response.json();
 
             const doctorSelect = document.getElementById('doctor');
+            doctorSelect.innerHTML = '<option value="">Chọn bác sĩ</option>'
+
             if (result.doctors && result.doctors.length > 0) {
                 result.doctors.forEach(doctor => {
                     const option = document.createElement('option');

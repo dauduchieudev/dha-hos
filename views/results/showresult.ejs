@@ -20,7 +20,7 @@
         
             <div class="form-group">
                 <label for="blood_type">Nhóm máu</label>
-                <input value="<%= patient.BloodType.blood_type_name %>" readonly>
+                <input value="<%= patient.BloodType?.blood_type_name %>" readonly>
             </div>
         
             <div id="form-group-allergies" class="form-group">
@@ -51,18 +51,33 @@
             <h3>Kết quả xét nghiệm</h3>
         
             <div id="test-result-container">
-                <% if (testResults && testResults.length > 0) { %>
-                    <% testResults.forEach(result => { %>
-                        <div class="test-result">
-                            <h3><strong><%= result.TestIndicator.TestType.test_type_name %></strong></h3>
-                            <p><strong><%= result.TestIndicator.test_indicator_name %>:</strong> <%= result.test_value %> <%= result.TestIndicator.unit %></p>
-                            <p><strong>Ngưỡng trung bình:</strong> <%= result.TestIndicator.reference_range %></p>
-                            <p><strong>Ghi chú:</strong> <%= result.comments || "Chưa có ghi chú" %></p>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <p>Chưa có kết quả xét nghiệm.</p>
-                <% } %>
+                <% results.forEach(result => { %>
+                    <div class="test-result">
+                        <h4><strong><%= result.test_type_name %></strong></h4>
+            
+                        <!-- Bảng kết quả xét nghiệm -->
+                        <table class="test-indicator-table">
+                            <thead>
+                                <tr>
+                                    <th>Tên loại test</th>
+                                    <th>Kết quả</th>
+                                    <th>Ngưỡng trung bình</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% result.test_indicators.forEach(testIndicator => { %>
+                                    <tr>
+                                        <td><%= testIndicator.test_indicator_name %></td>
+                                        <td><%= testIndicator.test_value %> <%= testIndicator.unit %></td>
+                                        <td><%= testIndicator.reference_range %> <%= testIndicator.unit %></td>
+                                        <td><%= testIndicator.comments || "Chưa có ghi chú" %></td>
+                                    </tr>
+                                <% }) %> 
+                            </tbody>
+                        </table>
+                    </div>
+                <% }) %> 
             </div>
         </div>
         

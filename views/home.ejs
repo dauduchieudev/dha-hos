@@ -9,8 +9,6 @@
     
     <link href="css/layout.css" rel="stylesheet">
     <link href="css/userhome.css" rel="stylesheet">
-    <link rel="icon" href="/images/rel-icon.png">
-    
 </head>
 
 <body>
@@ -18,7 +16,7 @@
         <img src="images/banner.avif" alt="Banner Bệnh Viện ABC" class="banner-image">
         <div class="banner-overlay"></div>
         
-        <form id="banner-form" class="banner-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 40px;">
+        <form method="POST" action="/symthon-search" id="banner-form" class="banner-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 40px;">
             <h2>Lựa chọn chuyên khoa khám phù hợp với AI</h2>
             <div class="g-recaptcha" data-sitekey="6Le_Q4MqAAAAALDkCvOlN5r1DN89oNqb8sqHtdD6"></div>
             <div class="search-bar">
@@ -143,7 +141,7 @@
             <div class="content">
                 <h2>Tra Cứu Thông Tin Thuốc</h2>
                 <p>Tra cứu thông tin về các loại thuốc nhanh chóng và chính xác.</p>
-                <button class="btn-secondary">Tra Cứu Ngay</button>
+                <a href="/medicines"><button class="btn-secondary">Tra Cứu Ngay</button></a>
             </div>
             <div class="image" style="background-image: url('images/mdc.jpeg');"></div>
         </section>
@@ -165,7 +163,7 @@
             <div class="content">
                 <h2>Đội Ngũ Bác Sĩ</h2>
                 <p>Gặp gỡ đội ngũ bác sĩ giàu kinh nghiệm và tận tâm của chúng tôi.</p>
-                <button class="btn-primary">Xem Đội Ngũ</button>
+                <!-- <button class="btn-primary">Xem Đội Ngũ</button> -->
             </div>
             <div class="image" style="background-image: url('images/doctor.jpg');"></div>
         </section>

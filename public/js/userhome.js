@@ -1,7 +1,7 @@
 document.getElementById('banner-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Ngăn chặn hành động submit mặc định, không reload trang
-    
-    // Lấy dữ liệu CAPTCHA từ Google reCAPTCHA
+    document.getElementById('result').innerText = `Đang phân tích...`;
+    event.preventDefault();
+
     const captchaResponse = grecaptcha.getResponse();
     const symptomInput = document.getElementById('search-input').value;
 
@@ -10,8 +10,7 @@ document.getElementById('banner-form').addEventListener('submit', function(event
         return;
     }
 
-    // Gửi dữ liệu đến server (có thể dùng fetch API)
-    fetch('/submit', {
+    fetch('/symptom-search', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,11 +20,14 @@ document.getElementById('banner-form').addEventListener('submit', function(event
             'symptom': symptomInput
         })
     })
-    .then(response => response.json())  // Giả sử server trả về JSON
+    .then(response => response.json())
     .then(data => {
-        // Sau khi nhận kết quả từ server, hiển thị vào thẻ <p>
-        if (data.success) {
-            document.getElementById('result').innerText = `Chuyên khoa phù hợp: ${data.specialty}`;
+        if (1 || data.success) {
+            if (data.specialty === "Non-Medical") {
+                document.getElementById('result').innerText = `Bạn chưa nhập đúng những triệu chứng y khoa. Vui lòng thử lại!`;
+            } else {
+                document.getElementById('result').innerText = `Chuyên khoa phù hợp: ${data.specialty}`;
+            }
         } else {
             document.getElementById('result').innerText = "Xác minh CAPTCHA thất bại. Vui lòng thử lại.";
         }

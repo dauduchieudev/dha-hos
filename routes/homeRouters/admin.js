@@ -6,10 +6,6 @@ const router = express.Router();
 // Route chính: Hiển thị Dashboard
 router.get('/', adminController.showDashboard);
 
-// Route thêm người dùng mới
-router.get('/users/new', adminController.showAddUserForm); // Hiển thị form thêm người dùng
-router.post('/users/new', adminController.addUser);        // Xử lý thêm người dùng
-
 // [POST] /admin/users/search - Tìm kiếm người dùng
 router.post('/users/search', adminController.searchUser);
 
@@ -19,12 +15,23 @@ router.get('/users/:id/edit', adminController.showEditUserForm); // Hiển thị
 router.post('/users/:id', adminController.updateUser); // Xử lý cập nhật người dùng
 router.post('/users/:id/delete', adminController.deleteUser); // Xử lý xóa người dùng
 
-// Route thêm thuốc mới
-router.get('/medicine/new', adminController.showAddMedicineForm); // Hiển thị form thêm thuốc
-router.post('/medicine/new', adminController.addMedicine);        // Xử lý thêm thuốc
+// Route quản lý bệnh nhân
+router.get('/patients/new', adminController.showAddPatientForm);  // Hiển thị form thêm bệnh nhân
+router.post('/patients/new', adminController.addPatient);         // Xử lý thêm bệnh nhân
+
+// [POST] /admin/doctors/search - Tìm kiếm bác sĩ theo user_name
+router.get('/doctors/search', adminController.searchDoctorByUsername);
+
+// Route quản lý bác sĩ
+router.get('/doctors/new', adminController.showAddDoctorForm);  // Hiển thị form thêm bác sĩ
+router.post('/doctors/new', adminController.addDoctor);         // Xử lý thêm bác sĩ
 
 // Route xử lý tìm kiếm thuốc
 router.post('/medicine/search', adminController.searchMedication);
+
+// Route thêm thuốc mới
+router.get('/medicine/new', adminController.showAddMedicineForm); // Hiển thị form thêm thuốc
+router.post('/medicine/new', adminController.addMedicine);        // Xử lý thêm thuốc
 
 // Route quản lý thuốc
 router.get('/medicine', adminController.listMedications);

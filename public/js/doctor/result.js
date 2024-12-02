@@ -43,6 +43,15 @@ document.querySelectorAll('.sidebar li').forEach(function(menuItem) {
     });
 });
 
+function toggleTestIndicators(testTypeName) {
+    const indicatorsDiv = document.getElementById(`test-indicators-${testTypeName}`);
+    if (indicatorsDiv.style.display === "none") {
+        indicatorsDiv.style.display = "block"; // Hiển thị các test indicators
+    } else {
+        indicatorsDiv.style.display = "none"; // Ẩn các test indicators
+    }
+}
+
 // Thêm test khám
 function addTestResult() {
     // Hiển thị form nhập liệu
@@ -57,7 +66,7 @@ function addTestResult() {
 
             // Thêm option mặc định nếu cần
             const defaultOption = document.createElement("option");
-            defaultOption.value = "0";
+            defaultOption.value = "";
             defaultOption.text = "Chọn loại xét nghiệm";
             testTypeSelect.appendChild(defaultOption);
 
@@ -105,8 +114,7 @@ function loadTestIndicators() {
                         <strong>Ghi chú:</strong>
                         <input id="comment_${result.test_indicator_id}" 
                                   name="comment_${result.test_indicator_id}" 
-                                  class="form-control" placeholder="Nhập ghi chú cho kết quả xét nghiệm">
-                        </input required>
+                                  class="form-control" placeholder="Nhập ghi chú cho kết quả xét nghiệm" required>
                     </p>
                 `;
 
@@ -252,14 +260,46 @@ function deletePrescription(medicationId) {
 
 // Lưu kết quả test
 function submitTestResult() {
-    const testResults = [];
+    console.log(12)
     const testIndicators = document.querySelectorAll("#test-indicator-container .test-indicator");
 
+    let isValid = true; 
+
+    const testType = document.querySelector("#test_type");
+    const testTypeName = testType.options[testType.selectedIndex].text;
+
+    if (!testType.value) {
+        alert("Vui lòng chọn loại xét nghiệm.");
+        return;
+    }
+
+    const existingTestTypes = document.querySelectorAll(".test-result h4 strong");
+    let isDuplicate = false;
+
+    existingTestTypes.forEach(testTypeElement => {
+        const existingTestTypeName = testTypeElement.textContent.trim(); 
+
+        if (existingTestTypeName === testTypeName) {
+            isDuplicate = true;
+        }
+    });
+
+    if (isDuplicate) {
+        alert("Loại xét nghiệm này đã có trong kết quả.");
+        return;
+    }
+
     // Đẩy các giá trị vào mảng testResults
+    const testResults = [];
+
     testIndicators.forEach(indicator => {
         const testIndicatorId = indicator.querySelector('input[name^="test_value_"]').id.split('_')[2]; 
         const testValue = indicator.querySelector('input[name^="test_value_"]').value;
         const comments = indicator.querySelector('input[name^="comment_"]').value;
+
+        if (!testValue || !comments) {
+            isValid = false; 
+        }
 
         testResults.push({
             test_indicator_id: testIndicatorId,
@@ -267,6 +307,11 @@ function submitTestResult() {
             comments: comments
         });
     });
+
+    if (!isValid) {
+        alert("Vui lòng điền đầy đủ thông tin trước khi lưu.");
+        return;
+    }
 
     // Gửi dữ liệu lên server
     fetch('/doctor/submit-test-result', {
@@ -298,6 +343,23 @@ function saveImageResult() {
     const imagingTypeId = document.getElementById("imaging_type").value;
     const imageUrl = document.getElementById("image_url").value;
     const comments = document.getElementById("comments").value;
+
+    if (!imagingTypeId) {
+        alert("Vui lòng chọn loại hình ảnh.");
+        return;
+    }
+    
+    if (!imageUrl) {
+        alert("Vui lòng nhập link ảnh.");
+        return;
+    }
+
+    // Kiểm tra định dạng URL hợp lệ
+    const urlPattern = /^https?:\/\/[^\s]+$/;
+    if (!urlPattern.test(imageUrl)) {
+        alert("Vui lòng nhập một link ảnh hợp lệ.");
+        return;
+    }
 
     // Gửi request để lưu kết quả mới
     fetch('/doctor/save-image-result', {

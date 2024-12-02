@@ -22,13 +22,14 @@ input, select {
 }
 
 /* CSS cho input readonly */
-input.readonly {
-    background-color: #e0e0e0; /* Nền nhạt cho input readonly */
+input.readonly, select[disabled] {
+    background-color: #e0e0e0; /* Nền nhạt cho input readonly và select disabled */
     color: #888; /* Chữ nhạt */
     border: 1px solid #ccc; /* Viền nhạt */
     cursor: not-allowed; /* Trỏ chuột là not-allowed */
 }
 
+/* CSS cho body và form */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;

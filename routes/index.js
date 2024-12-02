@@ -9,6 +9,8 @@ const doctorRouter = require("./homeRouters/doctor.js");
 const adminRouter = require("./homeRouters/admin.js");
 const appointmentRouter = require("./appointment.js");
 const viewResultRouter = require("./viewresult.js");
+const symptomSearchRouter = require("./homeRouters/symptomSearch.js")
+const medicinesRouter = require('./medicines.js')
 
 function route(app) {
 
@@ -29,6 +31,10 @@ function route(app) {
     app.use('/appointment', authorizeRoles('Bệnh nhân'), appointmentRouter);
 
     app.use('/view-result', authorizeRoles('Bệnh nhân'), viewResultRouter);
+    
+    app.use("/symptom-search", symptomSearchRouter)
+
+    app.use('/medicines', medicinesRouter)
 
     app.use('/', homeRouter);
 

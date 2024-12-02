@@ -8,7 +8,7 @@ router.get("/old", appointmentController.showOld);
 router.get("/pending", appointmentController.showPending);
 router.get("/new", appointmentController.showNew);
 router.get("/renew", appointmentController.showRenew);
-router.get("/new/random-department", appointmentController.getRamdomDepartment);
+router.post("/new/get-department", appointmentController.getDepartment);
 router.get("/new/get-clinics", appointmentController.getClinics);
 router.get("/renew/:appointment_id", appointmentController.getReVisit);
 router.post("/new/get-available-doctors", appointmentController.getAvailableDoctors);

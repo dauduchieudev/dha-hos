@@ -1,0 +1,235 @@
+<% customCSS = `
+    <style>
+        /* General layout */
+
+        .booking-layout {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        /* Form search */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .search-form input {
+            padding: 10px;
+            width: 300px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Error message */
+        .error-message {
+            text-align: center;
+            color: red;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        /* Table */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        td:hover {
+            background-color: #f1f1f1;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f7f7f7;
+        }
+
+        /* Pagination */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: #007BFF;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .pagination .active {
+            background-color: #007BFF;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .pagination .first, .pagination .last {
+            font-weight: bold;
+        }
+
+        /* Jump to page */
+        .jump-to-page {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .jump-to-page input {
+            padding: 10px;
+            width: 80px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .jump-to-page button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .jump-to-page button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .search-form input {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .pagination a {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .jump-to-page input {
+                width: 60px;
+            }
+
+            table {
+                width: 100%;
+                font-size: 14px;
+            }
+        }
+    </style>
+` %>
+
+<h1>Medication List</h1>
+
+<!-- Form tìm kiếm medication -->
+<form action="/medicines/search" method="POST" class="search-form">
+    <input type="text" name="medication_name" placeholder="Search by Medication Name" required>
+    <button type="submit">Search</button>
+</form>
+
+<!-- Hiển thị lỗi nếu không tìm thấy -->
+<% if (errorMessage) { %>
+    <p class="error-message"><%= errorMessage %></p>
+<% } %>
+
+<!-- Bảng danh sách medications -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Medication Name</th>
+            <th>Unit</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% medications.forEach(medication => { %>
+            <tr>
+                <td><%= medication.medication_id %></td>
+                <td><%= medication.medication_name %></td>
+                <td><%= medication.unit %></td>
+                <td><%= medication.description %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<% if (totalPages > 1) { %>
+    <div class="pagination">
+        <a href="/medicines?page=1" class="first">First</a>
+        <% if (currentPage > 1) { %>
+            <a href="/medicines?page=<%= currentPage - 1 %>" class="prev">Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <% if (i >= currentPage - 2 && i <= currentPage + 2) { %> <!-- Hiển thị số trang gần -->
+                <a href="/medicines?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+            <a href="/medicines?page=<%= currentPage + 1 %>" class="next">Next</a>
+        <% } %>
+        <a href="/medicines?page=<%= totalPages %>" class="last">Last</a>
+    </div>
+<% } %>
+
+<!-- Jump to page -->
+<div class="jump-to-page">
+    <form action="/medicines" method="GET" class="jump-form">
+        <input type="number" name="page" min="1" max="<%= totalPages %>" placeholder="Page #" required>
+        <button type="submit">Go</button>
+    </form>
+</div>
+
+<% customJS = "" %>

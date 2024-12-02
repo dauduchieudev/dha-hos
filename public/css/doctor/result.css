@@ -1,8 +1,9 @@
 .sidebar {
   width: 20%;
   height: 100%;
-  border-right: 1px solid #ccc;
   padding: 10px;
+  position: relative;
+  left: 0;
 }
 
 .sidebar ul {
@@ -34,12 +35,25 @@
 }
 
 .content {
-  width: 100%;
-  padding: 20px;
-  margin-left: 70px;
+  width: 75%; 
+  padding: 30px;
+  margin-left: 10%; 
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-#diagnosis-section {
+.content h3 {
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.section {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -48,75 +62,35 @@
   margin: 0 auto;
 }
 
-#diagnosis-section h3 {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: #333;
-  text-align: center;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-/* Form Group Styles */
 .form-group {
   display: flex;
-  align-items: center; 
-  justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
   font-weight: 600;
   color: #444;
-  font-size: 1rem;
-}
-
-#blood_type {
-  -webkit-appearance: none;  
-  -moz-appearance: none;
-  appearance: none;          
-  padding-right: 2.5rem;
-  background-color: #fff;
-  background-position: right 10px center;
-  background-repeat: no-repeat;
-  background-size: 12px;
-}
-
-#blood_type:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
-}
-
-#blood_type {
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"%3E%3Cpath d="M4 5l-3-3h6z" fill="%23000" /%3E%3C/svg%3E');
-  background-position: right 10px center;
-  background-repeat: no-repeat;
-}
-
-#form-group-allergies {
-  margin-bottom: 60px;
-}
-
-#form-group-allergies textarea {
-  min-height: 60px;
-  max-height: 150px;
-  resize: vertical;
+  font-size: 1.1rem;
+  width: 100%;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  padding: 0.8rem 1rem;
+  width: 100%;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
   color: #333;
+  background-color: #fff;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
-/* Hover and Focus Effects */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -124,36 +98,58 @@
   box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
 }
 
-/* Textarea Styling */
-.form-group textarea {
-  min-height: 100px;
-  max-height: 250px;
-  resize: vertical;
-}
-
-/* Button Styles */
-button.btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
-  color: white;
-  background-color: #007bff;
-  border: none;
+#diagnosis-section,
+#test-results-section,
+#image-results-section,
+#prescriptions-section {
+  background-color: #fff;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: auto;
-  margin: 1rem auto 0;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-button.btn:hover {
-  background-color: #0056b3;
+#diagnosis-section h3,
+#test-results-section h3,
+#image-results-section h3,
+#prescriptions-section h3 {
+  font-size: 1.8rem;
+  color: #007bff;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: left;
 }
 
-button.btn:focus {
-  outline: none;
+#test-results-section .test-result,
+#image-results-section .image-result,
+#prescriptions-section table {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 15px;
+  border: 1px solid #ddd;
 }
 
-#image-results-section {
+.test-result p,
+.image-result p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.test-result p strong,
+.image-result p strong {
+  color: #007bff;
+}
+
+#test-type-form label {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#test-type-form select {
+  margin-bottom: 20px;  
+}
+
+#prescriptions-section {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -162,70 +158,41 @@ button.btn:focus {
   margin: 0 auto;
 }
 
-/* Tiêu đề phần kết quả chụp chiếu */
-#image-results-section h3 {
-  font-size: 1.8rem;
-  color: #333;
+#prescriptions-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
+
+#prescriptions-section th, #prescriptions-section td {
+  padding: 12px 15px;
   text-align: center;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-/* Style cho button thêm kết quả */
-button.btn-success {
-  background-color: #28a745;
-  border-color: #28a745;
-  margin: 0 auto;
-  font-size: 1.1rem;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: block;
-  width: auto;
-}
-
-button.btn-success:hover {
-  background-color: #218838;
-}
-
-button.btn-success:focus {
-  outline: none;
-}
-
-/* Các phần hiển thị kết quả chụp chiếu */
-.image-result {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 8px;
   border: 1px solid #ddd;
-  margin: 15px 0 15px 0;
 }
 
-.image-result p {
-  margin: 10px 0;
-  font-size: 1rem;
+#prescriptions-section th {
+  background-color: #f1f1f1;
+  font-weight: bold;
 }
 
-.image-result p strong {
-  color: #007bff;
-}
+@media (max-width: 768px) {
+  .content {
+    width: 100%;
+    margin-left: 0;
+    padding: 15px;
+  }
 
-/* Style cho button xóa kết quả */
-button.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 0.9rem;
+  }
 
-button.btn-danger:hover {
-  background-color: #c82333;
-}
-
-button.btn-danger:focus {
-  outline: none;
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+  }
 }
 
 /* Style cho form thêm kết quả (ẩn ban đầu) */
@@ -244,29 +211,30 @@ button.btn-danger:focus {
   margin-bottom: 5px;
 }
 
-#prescriptions-section {
+#image-results-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
+
+#image-results-section th, #image-results-section td {
+  padding: 12px 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+#image-results-section th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+#image-results-section {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 1.5rem;
   max-width: 800px;
   margin: 0 auto;
-}
-
-#prescriptions-section table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-#prescriptions-section th, #prescriptions-section td {
-  padding: 12px 15px;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-#prescriptions-section th {
-  background-color: #f1f1f1;
-  font-weight: bold;
 }
 
 /* Prescription Form Styles */
@@ -307,27 +275,153 @@ button.btn-danger:focus {
   display: none;
   list-style-type: none;
   padding-left: 0;
-  margin-top: 5px;
   max-height: 200px;
+  min-width: 230px;
   overflow-y: auto;
   position: absolute;
-  background-color: #fff;
-  width: 30%;
+  background-color: #f9f9f9;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 #medication-suggestions li {
-  padding: 10px;
+  padding: 9px;
   cursor: pointer;
-  border: 1px solid #ddd;
-  margin: 2px 0;
-  border-radius: 4px;
+  border: 1px solid rgb(64, 59, 59);
+  margin: 5px;
+  border-radius: 10px;
   background-color: #f9f9f9;
+  text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 #medication-suggestions li:hover {
   background-color: #007bff;
   color: white;
+}
+
+#test-result-container {
+  margin-top: 30px;
+}
+
+.test-indicator-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.test-indicator-table th, .test-indicator-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.test-indicator-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.test-indicator-table td {
+  background-color: #fff;
+  font-size: 14px;
+}
+
+.test-indicator-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.test-indicator-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Optional: Style the entire test result section */
+.test-result h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.test-result {
+  margin-bottom: 20px;
+}
+
+/* Button Styles */
+button.btn {
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+}
+
+.btn-edit {
+  background-color: rgb(251, 251, 64);
+  transition: linear background-color 0.3s;
+  padding: 10px;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+}
+
+.btn-edit:hover {
+  background-color: rgb(255, 255, 0);
+}
+
+button.btn:hover {
+  background-color: #0056b3;
+}
+
+button.btn:focus {
+  outline: none;
+}
+
+button.btn-primary {
+  margin-top: 20px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Style cho button thêm kết quả */
+button.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: auto;
+}
+
+button.btn-success:hover {
+  background-color: #218838;
+}
+
+button.btn-success:focus {
+  outline: none;
+}
+
+/* Style cho button xóa kết quả */
+button.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-danger:hover {
+  background-color: #c82333;
+}
+
+button.btn-danger:focus {
+  outline: none;
 }
 
 .active {

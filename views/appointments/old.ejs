@@ -25,7 +25,7 @@
                             <p>Phòng khám: <%= appointment.ClinicRoom.room_name %></p>
                             <p>Bác sĩ: <%= appointment.Doctor.User.full_name %></p>
                         </div>
-                        <a href="/appointment/results/<%= appointment.appointment_id %>" 
+                        <a href="/view-result/<%= appointment.appointment_id %>" 
                             class="btn view-results">
                             Kết quả khám
                         </a>

@@ -17,7 +17,7 @@ const ImagingType = require("../../models/ImagingType.js");
 const Prescription = require("../../models/Prescription.js");
 const PrescriptionDetail = require("../../models/PrescriptionDetail.js");
 const Medication = require("../../models/Medication.js");
-const BloodType = require("../../models/BloodType.js");
+const BloodType = require("../../models/BloodType.js");  
 
 class DoctorController {
 
@@ -134,7 +134,8 @@ class DoctorController {
         const offset = (page - 1) * limit;
 
         const doctor = await Doctor.findOne({
-            where: { user_id: user.user_id }
+            where: { user_id: user.user_id },
+            attributes: [ 'doctor_id' ]
         })
 
         // Truy vấn danh sách lịch khám
@@ -187,7 +188,8 @@ class DoctorController {
         const offset = (page - 1) * limit;
 
         const doctor = await Doctor.findOne({
-            where: { user_id: user.user_id }
+            where: { user_id: user.user_id },
+            attributes: [ 'doctor_id' ]
         })
 
         // Truy vấn danh sách lịch khám
@@ -231,7 +233,7 @@ class DoctorController {
         });
     }
 
-    // [GET] /edit-result/:appointment_id
+    // [GET] /edit-result/:appointment_id 
     async showEditResultPage(req, res) {
         const user = req.user;
         const { appointment_id } = req.params;
@@ -258,18 +260,54 @@ class DoctorController {
             where: { appointment_id }
         });
 
-        const testResults = await TestResult.findAll({
-            where: { appointment_id },
-            include: {
-                model: TestIndicator,
-                attributes: [ 'test_indicator_name', 'unit', 'reference_range' ],
-                include: {
-                    model: TestType,
-                    attributes: [ 'test_type_name' ],
+        const distinctTestTypeIds = await TestIndicator.findAll({
+            attributes: ['test_type_id'],  
+            include: [
+                {
+                    model: TestResult,
+                    attributes: [], 
+                    where: { appointment_id }
                 }
-            }
+            ],
+            group: ['test_type_id'] 
         });
 
+        const testTypeIds = distinctTestTypeIds.map(item => item.test_type_id);
+
+        const testTypes = await TestType.findAll({
+            where: { test_type_id: { [Op.in]: testTypeIds } },
+            attributes: ['test_type_name'],
+            include: [
+                {
+                    model: TestIndicator,
+                    attributes: ['test_indicator_name', 'unit', 'reference_range'],
+                    include: [
+                        {
+                            model: TestResult,
+                            attributes: ['test_value', 'comments', 'test_result_id'],
+                            where: { appointment_id }
+                        }
+                    ]
+                }
+            ]
+        });
+        
+        const results = testTypes.map(testType => {
+            return {
+                test_type_name: testType.test_type_name,
+                test_indicators: testType.TestIndicators.map(testIndicator => {
+                    return {
+                        test_indicator_name: testIndicator.test_indicator_name,
+                        unit: testIndicator.unit,
+                        reference_range: testIndicator.reference_range,
+                        test_value: testIndicator.TestResult.test_value,
+                        comments: testIndicator.TestResult.comments,
+                        test_result_id: testIndicator.TestResult.test_result_id
+                    }
+                })
+            };
+        });
+        
         const imageResults = await ImagingResult.findAll({
             where: { appointment_id },
             include: {
@@ -297,11 +335,34 @@ class DoctorController {
             user,
             patient,
             diagnosis: diagnosis || [],
-            testResults: testResults || [],
+            results: results || [],
             imageResults: imageResults || [],
             prescriptionDetails: prescriptionDetails || [],
             appointment_id
         });
+    }
+
+    // [GET] /edit-test-indicator
+    async showEditTestIndicator(req, res) {
+        const user = req.user;
+        const testResultId = req.params.test_result_id;
+
+        const testResult = await TestResult.findOne({
+            where: { test_result_id: testResultId },
+            attributes: [ 'test_result_id', 'comments', 'test_value', 'test_indicator_id', 'appointment_id' ]
+        })
+
+        const testIndicator = await TestIndicator.findOne({
+            where: { test_indicator_id: testResult.test_indicator_id },
+            attributes: [ 'test_indicator_name', 'unit', 'reference_range' ]
+        })
+
+        return res.render('doctor/editTestResult', {
+            layout: "layouts/Doctorlayout",
+            user,
+            testResult,
+            testIndicator
+        })
     }
 
     // [GET] /get-test-types
@@ -415,7 +476,7 @@ class DoctorController {
         test_results.forEach(async (result) => {
             const { test_indicator_id, test_value, comments } = result;
         
-            // Lưu vào bảng TestResults
+            // Lưu vào bảng TestResults 
             await TestResult.create({
                 appointment_id,
                 test_indicator_id,
@@ -490,7 +551,7 @@ class DoctorController {
             usageInstructions: usage_instructions
         });
 
-        const appointment = await Appointment.findOne({ where: { appointment_id: appointment_id } });
+        const appointment = await Appointment.findOne({ where: { appointment_id: appointmentId } });
         if (appointment && appointment.status === 'Chờ khám') {
             await Appointment.update(
                 { status: 'Đã khám' },
@@ -501,7 +562,25 @@ class DoctorController {
         return res.status(200).json({success: true});
     }
 
-    // [DELETE] /delete-image-result/:imageResultId
+    // [POST] /update-test-indicator/:test_result_id
+    async updateTestIndicator(req, res) {
+        const testResultId = req.params.test_result_id;
+        const { appointment_id, test_value, comments } = req.body;
+
+        await TestResult.update(
+            {
+                test_value,
+                comments
+            },
+            {
+                where: { test_result_id: testResultId },
+            }
+        )
+
+        res.redirect(`/doctor/edit-result/${appointment_id}`);
+    }
+
+    // [POST] /delete-image-result/:imageResultId
     async deleteImageResult(req, res) {
         const { imageResultId } = req.body;
 
@@ -526,7 +605,7 @@ class DoctorController {
         
     }
 
-    // [DELETE] /delete-prescription/:prescriptionId
+    // [POST] /delete-prescription/:prescriptionId
     async deletePrescription(req, res) {
         const { medicationId } = req.body;
         

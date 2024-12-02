@@ -1,12 +1,9 @@
-.booking-layout {
-  display: flex;
-}
-
 .sidebar {
   width: 20%;
   height: 100%;
-  border-right: 1px solid #ccc;
   padding: 10px;
+  position: relative;
+  left: 0;
 }
 
 .sidebar ul {
@@ -38,7 +35,7 @@
 }
 
 .content {
-  width: 70%;
+  width: 80%;
   padding: 20px;
   margin-left: 70px;
   display: flex;

@@ -1,0 +1,78 @@
+/* Đảm bảo form được căn giữa và rộng đủ để nhìn đẹp */
+.update-test-indicator {
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style cho các group trong form */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Style cho nhãn (label) */
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Style cho các input */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+}
+
+/* Chỉnh sửa border khi focus vào input */
+.form-group input:focus {
+    border-color: #388e3c; /* Màu xanh lá cây khi focus */
+    outline: none;
+}
+
+/* Style cho button submit */
+button[type="submit"] {
+    background-color: #388e3c; /* Màu xanh lá cây */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Style khi hover vào button */
+button[type="submit"]:hover {
+    background-color: #2e7d32; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Thêm khoảng cách giữa các phần tử */
+input:disabled,
+input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+/* Chỉnh sửa style cho input type text để dễ nhìn */
+input[type="text"] {
+    font-size: 16px;
+}
+
+/* Tạo hiệu ứng hover cho các button */
+button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.8);
+}

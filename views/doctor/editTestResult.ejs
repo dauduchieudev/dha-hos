@@ -1,0 +1,33 @@
+<% customCSS = `<link rel="stylesheet" href="/css/doctor/editTestResult.css">` %>
+
+<form action="/doctor/update-test-indicator/<%= testResult.test_result_id %>" method="POST" class="update-test-indicator">
+    <input type="hidden" name="appointment_id" value="<%= testResult.appointment_id %>">
+    <div class="form-group">
+        <label for="test_indicator_name">Tên chỉ số xét nghiệm</label>
+        <input type="text" id="test_indicator_name" name="test_indicator_name" value="<%= testIndicator.test_indicator_name %>" class="form-control" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="test_value">Kết quả</label>
+        <input type="text" id="test_value" name="test_value" value="<%= testResult.test_value %>" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="unit">Đơn vị</label>
+        <input type="text" id="unit" name="unit" value="<%= testIndicator.unit %>" class="form-control" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="reference_range">Ngưỡng trung bình</label>
+        <input type="text" id="reference_range" name="reference_range" value="<%= testIndicator.reference_range %>" class="form-control" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="comments">Ghi chú</label>
+        <input id="comments" name="comments" class="form-control" value="<%= testResult.comments || 'Chưa có ghi chú' %>" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+</form>
+
+<% customJS = "" %>
