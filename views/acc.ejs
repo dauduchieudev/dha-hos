@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra cứu thông tin bác sĩ</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+        }
+
+        th {
+            background: #f4f4f4;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <input type="text" id="search-value" placeholder="Nhap thong tin de search...">
+    <select name="" id="select">
+        <option value="fullname">Ho va ten</option>
+        <option value="username">User name</option>
+    </select>
+    <button id="btn">Tra cuu</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Họ tên</th>
+                <th>Role</th>
+                <th>Username</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- <tr>
+                <td>Nguyễn Văn A</td>
+                <td>Admin</td>
+                <td>CNTT</td>
+                <td>admin1</td>
+                <td>123456</td>
+            </tr>
+            <tr>
+                <td>Trần Thị B</td>
+                <td>User</td>
+                <td>Marketing</td>
+                <td>user2</td>
+                <td>password</td>
+            </tr>
+            <tr>
+                <td>Phạm Văn C</td>
+                <td>User</td>
+                <td>Nhân sự</td>
+                <td>user3</td>
+                <td>abc123</td>
+            </tr> -->
+        </tbody>
+    </table>
+
+    <script src="socket.io/socket.io.js"></script>
+
+    <script>
+
+        const socket = io()
+
+        document.getElementById('btn').addEventListener('click', () => {
+            const field = document.getElementById('select').value
+            const value = document.getElementById('search-value').value.trim()
+            socket.emit('search', { field, value })
+            console.log({ field, value })
+        })
+
+        socket.on('searchResults', (data) => {
+            const tbody = document.querySelector('table tbody');
+            tbody.innerHTML = ''; // xoá hết các dòng cũ
+
+            if (!Array.isArray(data)) {
+                console.error('searchResults data invalid:', data);
+                return;
+            }
+
+            data.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${user.full_name}</td>
+                    <td>${user.role}</td>
+                    <td>${user.khoa || ''}</td>
+                    <td>${user.username}</td>
+                    <td>${user.password}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
